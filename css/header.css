@@ -3,22 +3,26 @@
    Enlazar en: index.html, carrito.html, producto.html, ticket.html
    (login.html NO la usa a propósito: no debe tener buscador)
 ========================================== */
- 
+
 /* Blindaje: el header y el menú lateral deben verse IGUAL en toda
    página, sin depender de si esa página trae su propio reset
-   global (* { box-sizing: border-box }). Por eso lo forzamos aquí
-   también sobre .side-menu y .menu-overlay, no solo sobre el header. */
+   global (* { box-sizing / font-family: ... }).
+   OJO: font-family va aquí, en el selector "* " (cada descendiente),
+   no solo en .navbar-tottus. Un valor HEREDADO siempre pierde contra
+   cualquier regla que apunte directo al elemento — aunque sea tan
+   genérica como un simple "*" — así que ponerlo solo en el padre
+   no alcanza para bloquear el "*" de otra página. */
 .navbar-tottus,
 .navbar-tottus *,
 .side-menu,
 .side-menu *,
 .menu-overlay {
     box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
- 
+
 .navbar-tottus {
     width: 100%;
-    font-family: Arial, sans-serif; /* fija la tipografía del header, sin heredar del body de cada página */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -31,14 +35,14 @@
     flex-wrap: nowrap;
     gap: 15px;
 }
- 
+
 .header-left {
     display: flex;
     align-items: center;
     gap: 18px;
     flex-shrink: 0;
 }
- 
+
 .logo-container {
     display: flex;
     align-items: center;
@@ -46,7 +50,7 @@
     text-decoration: none;
     flex-shrink: 0;
 }
- 
+
 .logo-drop {
     height: 38px;
     width: auto;
@@ -55,17 +59,17 @@
     display: block;
     flex-shrink: 0;
 }
- 
+
 .logo-text {
     font-size: 20px;
     font-weight: 900;
     font-family: Arial, sans-serif;
     white-space: nowrap;
 }
- 
+
 .text-blue { color: #00A3E0; }
 .text-red { color: #FF0000; }
- 
+
 .btn-menu-tottus {
     background: transparent;
     border: none;
@@ -80,11 +84,11 @@
     border-radius: 6px;
     white-space: nowrap;
 }
- 
+
 .btn-menu-tottus:hover {
     background-color: #f4f4f4;
 }
- 
+
 /* Buscador central: única sección que se encoge/crece */
 .header-search {
     flex: 1 1 auto;
@@ -97,7 +101,7 @@
     overflow: hidden;
     background: #fff;
 }
- 
+
 .header-search input {
     width: 100%;
     min-width: 0;
@@ -106,7 +110,7 @@
     font-size: 14px;
     outline: none;
 }
- 
+
 .header-search .btn-search {
     flex-shrink: 0;
     background-color: #0055A4;
@@ -116,51 +120,51 @@
     cursor: pointer;
     font-size: 14px;
 }
- 
+
 .header-search .btn-search:hover {
     background-color: #003f7a;
 }
- 
+
 .header-right {
     display: flex;
     align-items: center;
     gap: 20px;
     flex-shrink: 0;
 }
- 
+
 .user-session-container {
     position: relative;
 }
- 
+
 .user-trigger {
     cursor: pointer;
     user-select: none;
     padding: 4px 8px;
     border-radius: 6px;
 }
- 
+
 .user-trigger:hover {
     background-color: #f4f4f4;
 }
- 
+
 .user-text-box {
     display: flex;
     flex-direction: column;
     line-height: 1.2;
 }
- 
+
 .user-greeting-label {
     font-size: 11px;
     color: #666;
 }
- 
+
 .user-name-label {
     font-size: 13px;
     font-weight: bold;
     color: #111;
     white-space: nowrap;
 }
- 
+
 .user-dropdown-tottus {
     display: none;
     position: absolute;
@@ -175,11 +179,11 @@
     flex-direction: column;
     gap: 10px;
 }
- 
+
 .user-dropdown-tottus.active {
     display: flex;
 }
- 
+
 .user-dropdown-tottus p {
     margin: 0;
     font-size: 13px;
@@ -188,13 +192,13 @@
     border-bottom: 1px solid #eee;
     padding-bottom: 8px;
 }
- 
+
 .user-dropdown-tottus a {
     text-decoration: none;
     color: #0055A4;
     font-size: 13px;
 }
- 
+
 .btn-logout-tottus {
     background-color: #EA4335;
     color: white;
@@ -205,11 +209,11 @@
     font-weight: bold;
     font-size: 12px;
 }
- 
+
 .btn-logout-tottus:hover {
     background-color: #c5221f;
 }
- 
+
 .nav-extra-link {
     text-decoration: none;
     color: #333;
@@ -217,14 +221,14 @@
     font-weight: bold;
     white-space: nowrap;
 }
- 
+
 .cart-tottus {
     position: relative;
     font-size: 22px;
     text-decoration: none;
     color: #333;
 }
- 
+
 .cart-badge {
     position: absolute;
     top: -6px;
@@ -236,7 +240,7 @@
     border-radius: 50%;
     padding: 2px 6px;
 }
- 
+
 /* ==========================================
    MENÚ LATERAL (OFF-CANVAS) — compartido
 ========================================== */
@@ -254,11 +258,11 @@
     padding: 25px 20px;
     overflow-y: auto;
 }
- 
+
 .side-menu.active {
     left: 0;
 }
- 
+
 .menu-overlay {
     position: fixed;
     top: 0;
@@ -271,12 +275,12 @@
     pointer-events: none;
     transition: opacity 0.3s ease;
 }
- 
+
 .menu-overlay.active {
     opacity: 1;
     pointer-events: all;
 }
- 
+
 .side-menu-header {
     display: flex;
     justify-content: space-between;
@@ -285,13 +289,13 @@
     padding-bottom: 15px;
     margin-bottom: 20px;
 }
- 
+
 .side-menu-header h2 {
     font-size: 18px;
     color: #0055A4;
     margin: 0;
 }
- 
+
 .btn-close-menu {
     background: none;
     border: none;
@@ -300,11 +304,11 @@
     cursor: pointer;
     transition: color 0.2s;
 }
- 
+
 .btn-close-menu:hover {
     color: #EA4335;
 }
- 
+
 .side-menu-content label {
     display: flex;
     align-items: center;
@@ -314,7 +318,7 @@
     color: #333;
     cursor: pointer;
 }
- 
+
 /* ==========================================
    RESPONSIVE
 ========================================== */
