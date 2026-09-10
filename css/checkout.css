@@ -12,7 +12,7 @@ body {
 .checkout-container {
     display: flex;
     gap: 25px;
-    max-width: 1000px;
+    max-width: 1050px;
     margin: 30px auto 50px auto;
     padding: 0 20px;
     align-items: flex-start;
@@ -21,7 +21,7 @@ body {
 
 .checkout-form-section {
     flex: 2;
-    min-width: 280px;
+    min-width: 300px;
     background: white;
     padding: 25px 30px;
     border-radius: 8px;
@@ -44,6 +44,41 @@ body {
     margin-bottom: 25px;
 }
 
+/* Selector Boleta / Factura */
+.comprobante-toggle {
+    display: flex;
+    gap: 15px;
+}
+
+.comprobante-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.comprobante-option:has(input:checked) {
+    border-color: #0F4782;
+    background: #EAF2FA;
+    font-weight: bold;
+}
+
+.input-row {
+    display: flex;
+    gap: 15px;
+}
+
+.input-row .input-group {
+    flex: 1;
+    min-width: 0;
+}
+
 .input-group {
     margin-bottom: 18px;
 }
@@ -56,7 +91,8 @@ body {
     margin-bottom: 6px;
 }
 
-.input-group input {
+.input-group input,
+.input-group select {
     width: 100%;
     box-sizing: border-box;
     padding: 10px 12px;
@@ -64,10 +100,17 @@ body {
     border-radius: 6px;
     font-size: 14px;
     outline: none;
+    font-family: Arial, sans-serif;
 }
 
-.input-group input:focus {
+.input-group input:focus,
+.input-group select:focus {
     border-color: #0F4782;
+}
+
+.input-group input.input-invalid {
+    border-color: #E30613;
+    background: #FFF5F5;
 }
 
 .input-error {
@@ -89,10 +132,16 @@ body {
     border-radius: 8px;
     cursor: pointer;
     margin-top: 5px;
+    transition: background 0.2s, opacity 0.2s;
 }
 
-.btn-confirm-order:hover {
+.btn-confirm-order:hover:not(:disabled) {
     background: #00a650;
+}
+
+.btn-confirm-order:disabled {
+    background: #ccc;
+    cursor: not-allowed;
 }
 
 .checkout-summary-section {
@@ -127,4 +176,9 @@ body {
     border-top: 1px solid #eee;
     padding-top: 15px;
     margin-top: 5px;
+}
+
+@media (max-width: 600px) {
+    .input-row { flex-direction: column; gap: 0; }
+    .comprobante-toggle { flex-direction: column; }
 }
