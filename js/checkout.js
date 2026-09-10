@@ -249,7 +249,9 @@ function generarYGuardarTicket() {
         telefono: datosCliente.telefono,
         tipoComprobante: datosCliente.tipoComprobante,
         productos: productos,
-        total: total
+        total: total,
+        estado: 'VIGENTE',           // VIGENTE | PAGADO | LISTO_PARA_RECOJO | ENTREGADO | CANCELADO
+        personaAutorizada: null      // { nombre, dni } — se completa desde Mis Pedidos
     };
 
     const db = JSON.parse(localStorage.getItem('agro_tickets_db')) || [];

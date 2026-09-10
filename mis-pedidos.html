@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGROINPERU - Mis Pedidos</title>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/mis-pedidos.css">
+</head>
+<body>
+
+    <!-- CABECERA — idéntica al resto del sitio -->
+    <header class="navbar-tottus">
+        <div class="header-left">
+            <a href="index.html" class="logo-container">
+                <img src="img/logoagroperu.jpg" alt="Agroinperu" class="logo-drop">
+                <span class="logo-text">
+                    <span class="text-blue">AGROIN</span><span class="text-red">PERU</span> <span class="text-blue">S.A.C</span>
+                </span>
+            </a>
+            <button class="btn-menu-tottus" id="btn-main-menu">
+                <span>☰</span> Menú
+            </button>
+        </div>
+
+        <div class="header-search">
+            <input type="text" placeholder="Buscar en Agroinperu (conexiones, válvulas, mangueras...)" id="header-search-input">
+            <button type="button" class="btn-search" id="btn-header-search">🔍</button>
+        </div>
+
+        <div class="header-right">
+            <div class="user-session-container">
+                <div id="user-trigger" class="user-trigger">
+                    <div class="user-text-box">
+                        <span class="user-greeting-label">Hola,</span>
+                        <span class="user-name-label" id="user-display-name">Inicia sesión ⌄</span>
+                    </div>
+                </div>
+                <div id="user-dropdown-menu" class="user-dropdown-tottus">
+                    <p id="dropdown-user-full">Cargando...</p>
+                    <a href="#">Mi cuenta</a>
+                    <button id="btn-logout-tottus" class="btn-logout-tottus">Cerrar Sesión</button>
+                </div>
+            </div>
+            <a href="#" class="nav-extra-link">Mi cuenta</a>
+            <a href="carrito.html" class="cart-tottus">
+                🛒 <span class="cart-badge" id="cart-counter">0</span>
+            </a>
+        </div>
+    </header>
+
+    <div id="menu-overlay" class="menu-overlay"></div>
+    <div id="side-menu" class="side-menu">
+        <div class="side-menu-header">
+            <h2>Categorías</h2>
+            <button id="btn-close-menu" class="btn-close-menu">✖</button>
+        </div>
+        <div class="side-menu-content">
+            <label><input type="checkbox" checked> Conexiones HDPE</label>
+            <label><input type="checkbox" checked> Válvulas y Portaválvulas</label>
+            <label><input type="checkbox"> Aspersores</label>
+            <label><input type="checkbox"> Mangueras</label>
+        </div>
+    </div>
+
+    <!-- CONTENIDO: MIS PEDIDOS -->
+    <main class="pedidos-container">
+        <h2>Mis Pedidos</h2>
+        <p class="pedidos-subtitle">Consulta el estado de tus compras, cancela pedidos vigentes o asigna quién los recogerá.</p>
+
+        <div id="lista-pedidos" class="lista-pedidos"></div>
+
+        <div id="pedidos-empty-state" class="pedidos-empty-state" style="display:none;">
+            Aún no tienes pedidos registrados. <a href="index.html">Ir a la tienda</a>
+        </div>
+    </main>
+
+    <!-- MODAL: Persona autorizada -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Persona autorizada para el recojo</h3>
+            <p class="modal-note">Esta persona podrá recoger el pedido en tu lugar presentando su DNI.</p>
+
+            <div class="input-group">
+                <label>Nombres y Apellidos</label>
+                <input type="text" id="modal-nombre" placeholder="Ej. María Torres Quispe">
+                <span class="input-error" id="modal-err-nombre"></span>
+            </div>
+            <div class="input-group">
+                <label>DNI</label>
+                <input type="text" id="modal-dni" placeholder="8 dígitos" maxlength="8" inputmode="numeric">
+                <span class="input-error" id="modal-err-dni"></span>
+            </div>
+
+            <div class="modal-actions">
+                <button id="modal-btn-quitar" class="btn-modal btn-modal-danger" style="display:none;">Quitar autorización</button>
+                <div class="modal-actions-right">
+                    <button id="modal-btn-cancelar" class="btn-modal btn-modal-secondary">Cancelar</button>
+                    <button id="modal-btn-guardar" class="btn-modal btn-modal-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/mis-pedidos.js"></script>
+</body>
+</html>
