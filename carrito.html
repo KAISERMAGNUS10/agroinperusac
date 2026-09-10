@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGROINPERU - Carro de Compras</title>
+    <link rel="stylesheet" href="css/carrito.css">
+</head>
+<body>
+
+    <!-- CABECERA PRINCIPAL EXACTA AL INDEX -->
+    <header class="header-principal">
+        <div class="left-section">
+            <a href="index.html" class="logo-container">
+                <img src="img/logoagroperu.jpg" alt="Logo" class="logo-icon" onerror="this.style.display='none'">
+                <div class="logo-text">
+                    <span class="text-cyan">AGROIN</span><span class="text-red">PERU</span> <span class="text-cyan">S.A.C</span>
+                </div>
+            </a>
+            <button class="btn-menu">☰ Menú</button>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Buscar en Agroinperu (conexiones, válvulas, mangueras...)">
+            <button class="search-btn">🔍</button>
+        </div>
+
+        <div class="right-section">
+            <div class="user-info" id="user-display-header">
+                <small>Hola,</small>
+                <strong>Inicia sesión</strong>
+            </div>
+            <a href="#" class="account-link">Mi cuenta</a>
+            <a href="carrito.html" class="header-cart-icon" title="Ver carrito">
+                🛒
+                <span class="cart-badge" id="header-cart-badge">0</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL TIPO TOTTUS -->
+    <main class="cart-container">
+        
+        <!-- COLUMNA IZQUIERDA (PRODUCTOS) -->
+        <section class="cart-items-section">
+            <h2>Carro (<span id="cart-title-qty">0</span> productos)</h2>
+            <div class="pickup-badge">
+                <span>✔</span> Modalidad: Recojo presencial en tienda
+            </div>
+            
+            <div id="cart-list-container"></div>
+        </section>
+
+        <!-- COLUMNA DERECHA (RESUMEN DE PAGO) -->
+        <section class="cart-summary-section">
+            <h3>Resumen de la orden</h3>
+            <div class="summary-row">
+                <span>Productos (<span id="summary-qty">0</span>)</span>
+                <span id="summary-subtotal">S/ 0.00</span>
+            </div>
+            <div class="summary-row summary-total">
+                <span>Total:</span>
+                <span id="summary-total">S/ 0.00</span>
+            </div>
+            <button class="btn-continue" id="btn-continue-checkout">Continuar compra</button>
+        </section>
+
+    </main>
+
+    <script src="js/app.js"></script>
+    <script>
+        const cartListContainer = document.getElementById('cart-list-container');
+        const summaryQty = document.getElementById('summary-qty');
+        const cartTitleQty = document.getElementById('cart-title-qty');
+        const summaryTotal = document.getElementById('summary-total');
+        const summarySubtotal = document.getElementById('summary-subtotal');
+        const btnContinue = document.getElementById('btn-continue-checkout');
+        const headerCartBadge = document.getElementById('header-cart-badge');
+        const userDisplayHeader = document.getElementById('user-display-header');
+
+        // DIBUJA LOS PRODUCTOS EN PANTALLA
+        function renderizarCarritoPagina() {
+            let carritoLocal = JSON.parse(localStorage.getItem('agro_carrito_obj')) || {};
+            cartListContainer.innerHTML = '';
+            
+            let totalItems = 0;
+            let totalPrice = 0;
+            const entries = Object.entries(carritoLocal);
+
+            if (entries.length === 0) {
+                cartListContainer.innerHTML = `
+                    <div style="background: white; padding: 40px; text-align: center; border-radius: 8px; border: 1px solid #ddd;">
+                        <h3 style="color:#666; margin:0;">Tu carro está vacío</h3>
+                        <p style="color:#888; font-size:14px; margin-top:5px;">Agrega productos desde la tienda principal.</p>
+                    </div>`;
+                btnContinue.disabled = true;
+                btnContinue.style.background = '#ccc';
+                btnContinue.style.cursor = 'not-allowed';
+            } else {
+                btnContinue.disabled = false;
+                btnContinue.style.background = '#00c853';
+                btnContinue.style.cursor = 'pointer';
+                
+                entries.forEach(([id, item]) => {
+                    // Extrae las propiedades admitiendo español e inglés
+                    let nombre = item.nombre || item.name || item.titulo || "Producto Agro";
+                    let precio = parseFloat(item.precio || item.price || 0);
+                    let cantidad = parseInt(item.cantidad || item.qty || 1);
+                    let imagen = item.imagen || item.img || "img/logoagroperu.jpg";
+
+                    totalItems += cantidad;
+                    totalPrice += (precio * cantidad);
+
+                    cartListContainer.innerHTML += `
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <img src="${imagen}" alt="${nombre}" onerror="this.src='img/logoagroperu.jpg'"> 
+                                <div class="cart-item-details">
+                                    <span class="seller-tag">✔ Vendido por <strong>AGROINPERU</strong></span>
+                                    <strong>${nombre}</strong>
+                                </div>
+                            </div>
+                            
+                            <div class="controls-wrapper">
+                                <div class="item-price">S/ ${(precio * cantidad).toFixed(2)}</div>
+                                
+                                <div class="qty-controls">
+                                    <button type="button" onclick="modificarCantidad('${id}', -1)">-</button>
+                                    <span>${cantidad} UN</span>
+                                    <button type="button" onclick="modificarCantidad('${id}', 1)">+</button>
+                                </div>
+                                
+                                <button type="button" class="btn-delete" onclick="eliminarProducto('${id}')" title="Eliminar producto">🗑️</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // Actualiza montos y contadores
+            cartTitleQty.textContent = totalItems;
+            summaryQty.textContent = totalItems;
+            headerCartBadge.textContent = totalItems;
+            summarySubtotal.textContent = `S/ ${totalPrice.toFixed(2)}`;
+            summaryTotal.textContent = `S/ ${totalPrice.toFixed(2)}`;
+        }
+
+        // SUMA O RESTA CANTIDADES
+        window.modificarCantidad = function(id, cambio) {
+            let carritoLocal = JSON.parse(localStorage.getItem('agro_carrito_obj')) || {};
+            if (carritoLocal[id]) {
+                let cantidadActual = carritoLocal[id].cantidad !== undefined ? carritoLocal[id].cantidad : (carritoLocal[id].qty !== undefined ? carritoLocal[id].qty : 1);
+                let nuevaCantidad = cantidadActual + cambio;
+
+                if (nuevaCantidad <= 0) {
+                    delete carritoLocal[id];
+                } else {
+                    if (carritoLocal[id].cantidad !== undefined) carritoLocal[id].cantidad = nuevaCantidad;
+                    if (carritoLocal[id].qty !== undefined) carritoLocal[id].qty = nuevaCantidad;
+                }
+
+                localStorage.setItem('agro_carrito_obj', JSON.stringify(carritoLocal));
+                renderizarCarritoPagina();
+            }
+        };
+
+        // ELIMINA EL PRODUCTO COMPLETAMENTE
+        window.eliminarProducto = function(id) {
+            let carritoLocal = JSON.parse(localStorage.getItem('agro_carrito_obj')) || {};
+            if (carritoLocal[id]) {
+                delete carritoLocal[id];
+                localStorage.setItem('agro_carrito_obj', JSON.stringify(carritoLocal));
+                renderizarCarritoPagina();
+            }
+        };
+
+        // COMPRUEBA EL ESTADO DEL USUARIO EN LA CABECERA
+        function CargarEstadoUsuarioHeader() {
+            const usuarioLogueado = localStorage.getItem('usuario_agro');
+            if (usuarioLogueado && userDisplayHeader) {
+                userDisplayHeader.innerHTML = `<small>Hola,</small><strong>${usuarioLogueado}</strong>`;
+            }
+        }
+
+        // CONTINUAR A LA ENTREGA / LOGIN
+        btnContinue.addEventListener('click', () => {
+            const usuarioLogueado = localStorage.getItem('usuario_agro');
+            if (usuarioLogueado) {
+                window.location.href = 'checkout.html'; 
+            } else {
+                alert("Para continuar con tu compra, necesitas iniciar sesión.");
+                window.location.href = 'login.html';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderizarCarritoPagina();
+            CargarEstadoUsuarioHeader();
+        });
+    </script>
+</body>
+</html>

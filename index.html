@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIDP - Agro Integral del Perú</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <header class="navbar-tottus">
+        <div class="header-left">
+            <a href="index.html" class="logo-container">
+                <img src="img/logoagroperu.jpg" alt="Agroinperu" class="logo-drop">
+                <span class="logo-text">
+                    <span class="text-blue">AGROIN</span><span class="text-red">PERU</span> <span class="text-blue">S.A.C</span>
+                </span>
+            </a>
+            <button class="btn-menu-tottus" id="btn-main-menu">
+                <span>☰</span> Menú
+            </button>
+        </div>
+
+        <div class="header-search">
+            <input type="text" placeholder="Buscar en Agroinperu (conexiones, válvulas, mangueras...)" id="header-search-input">
+            <button type="button" class="btn-search" id="btn-header-search">🔍</button>
+        </div>
+
+        <div class="header-right">
+            <div class="user-session-container">
+                <div id="user-trigger" class="user-trigger">
+                    <div class="user-text-box">
+                        <span class="user-greeting-label">Hola,</span>
+                        <span class="user-name-label" id="user-display-name">Inicia sesión ⌄</span>
+                    </div>
+                </div>
+                
+                <div id="user-dropdown-menu" class="user-dropdown-tottus">
+                    <p id="dropdown-user-full">Cargando...</p>
+                    <a href="#">Mi cuenta</a>
+                    <button id="btn-logout-tottus" class="btn-logout-tottus">Cerrar Sesión</button>
+                </div>
+            </div>
+
+            <a href="#" class="nav-extra-link">Mi cuenta</a>
+
+            <a href="#" class="cart-tottus">
+                🛒 <span class="cart-badge" id="cart-counter">0</span>
+            </a>
+        </div>
+    </header>
+
+    <div id="menu-overlay" class="menu-overlay"></div>
+
+    <div id="side-menu" class="side-menu">
+        <div class="side-menu-header">
+            <h2>Categorías</h2>
+            <button id="btn-close-menu" class="btn-close-menu">✖</button>
+        </div>
+        
+        <div class="side-menu-content">
+            <label><input type="checkbox" checked> Conexiones HDPE</label>
+            <label><input type="checkbox" checked> Válvulas y Portaválvulas</label>
+            <label><input type="checkbox"> Aspersores</label>
+            <label><input type="checkbox"> Mangueras</label>
+        </div>
+    </div>
+
+    <section class="hero">
+        <h1>De todo para riego tecnificado</h1>
+    </section>
+
+    <main class="container">
+        <section class="product-area">
+            <div class="product-grid">
+                
+                <article class="product-card" data-id="1" data-nombre="Conexión Tee HDPE (Varias medidas)" data-precio="15.50">
+                    <span class="badge">Conexiones</span>
+                    <a href="producto.html?id=1&nombre=Conexion+Tee+HDPE&precio=15.50">
+                        <img src="https://placehold.co/400x300/e2e8f0/64748b?text=Tee+HDPE" alt="Tee HDPE">
+                        <h4>Conexión Tee HDPE (Varias medidas)</h4>
+                    </a>
+                    <p class="price">Desde S/ 15.50</p>
+                    <div class="cart-controls">
+                        <button class="btn-add-initial" onclick="agregarProducto(1)">+ Agregar</button>
+                        <div class="qty-control" style="display: none;">
+                            <button class="qty-btn trash" onclick="modificarQty(1, -1)">🗑️</button>
+                            <span class="qty-val">1 un</span>
+                            <button class="qty-btn" onclick="modificarQty(1, 1)">+</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-id="2" data-nombre="Collarín de Toma (Con pernos)" data-precio="8.20">
+                    <span class="badge">Accesorios</span>
+                    <a href="producto.html?id=2&nombre=Collarin+de+Toma&precio=8.20">
+                        <img src="https://placehold.co/400x300/e2e8f0/64748b?text=Collarin+Toma" alt="Collarín de toma">
+                        <h4>Collarín de Toma (Con pernos)</h4>
+                    </a>
+                    <p class="price">Desde S/ 8.20</p>
+                    <div class="cart-controls">
+                        <button class="btn-add-initial" onclick="agregarProducto(2)">+ Agregar</button>
+                        <div class="qty-control" style="display: none;">
+                            <button class="qty-btn trash" onclick="modificarQty(2, -1)">🗑️</button>
+                            <span class="qty-val">1 un</span>
+                            <button class="qty-btn" onclick="modificarQty(2, 1)">+</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-id="3" data-nombre="Válvula de Bola PP" data-precio="25.00">
+                    <span class="badge">Válvulas</span>
+                    <a href="producto.html?id=3&nombre=Valvula+de+Bola+PP&precio=25.00">
+                        <img src="https://placehold.co/400x300/e2e8f0/64748b?text=Valvula+Bola" alt="Válvula de Bola">
+                        <h4>Válvula de Bola PP</h4>
+                    </a>
+                    <p class="price">Desde S/ 25.00</p>
+                    <div class="cart-controls">
+                        <button class="btn-add-initial" onclick="agregarProducto(3)">+ Agregar</button>
+                        <div class="qty-control" style="display: none;">
+                            <button class="qty-btn trash" onclick="modificarQty(3, -1)">🗑️</button>
+                            <span class="qty-val">1 un</span>
+                            <button class="qty-btn" onclick="modificarQty(3, 1)">+</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-id="4" data-nombre="Aspersor de Impacto Plástico" data-precio="12.00">
+                    <span class="badge">Aspersores</span>
+                    <a href="producto.html?id=4&nombre=Aspersor+Impacto&precio=12.00">
+                        <img src="https://placehold.co/400x300/e2e8f0/64748b?text=Aspersor" alt="Aspersor">
+                        <h4>Aspersor de Impacto Plástico</h4>
+                    </a>
+                    <p class="price">Desde S/ 12.00</p>
+                    <div class="cart-controls">
+                        <button class="btn-add-initial" onclick="agregarProducto(4)">+ Agregar</button>
+                        <div class="qty-control" style="display: none;">
+                            <button class="qty-btn trash" onclick="modificarQty(4, -1)">🗑️</button>
+                            <span class="qty-val">1 un</span>
+                            <button class="qty-btn" onclick="modificarQty(4, 1)">+</button>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Script exclusivo para el index (Menú y Grid de Productos) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnMainMenu = document.getElementById('btn-main-menu');
+            const sideMenu = document.getElementById('side-menu');
+            const menuOverlay = document.getElementById('menu-overlay');
+            const btnCloseMenu = document.getElementById('btn-close-menu');
+
+            const toggleMenu = () => {
+                if (sideMenu && menuOverlay) {
+                    sideMenu.classList.toggle('active');
+                    menuOverlay.classList.toggle('active');
+                }
+            };
+
+            if (btnMainMenu) btnMainMenu.addEventListener('click', toggleMenu);
+            if (btnCloseMenu) btnCloseMenu.addEventListener('click', toggleMenu);
+            if (menuOverlay) menuOverlay.addEventListener('click', toggleMenu);
+
+            renderizarCarrito();
+        });
+
+        let carritoLocal = JSON.parse(localStorage.getItem('agro_carrito_obj')) || {};
+
+        function renderizarCarrito() {
+            // Delega el conteo total a app.js si está disponible
+            if(typeof actualizarContadorCarrito === 'function') {
+                actualizarContadorCarrito();
+            }
+
+            document.querySelectorAll('.product-card').forEach(card => {
+                const id = card.getAttribute('data-id');
+                const btnInitial = card.querySelector('.btn-add-initial');
+                const qtyControl = card.querySelector('.qty-control');
+                const qtyVal = card.querySelector('.qty-val');
+
+                if (carritoLocal[id] && carritoLocal[id].qty > 0) {
+                    if(btnInitial) btnInitial.style.display = 'none';
+                    if(qtyControl) qtyControl.style.display = 'flex';
+                    if(qtyVal) qtyVal.textContent = carritoLocal[id].qty + ' un';
+
+                    const btnMenos = qtyControl.children[0]; 
+                    if (carritoLocal[id].qty === 1) {
+                        btnMenos.textContent = '🗑️';
+                        btnMenos.style.background = 'white';
+                        btnMenos.style.color = '#00b900';
+                        btnMenos.style.border = '1px solid #00b900';
+                    } else {
+                        btnMenos.textContent = '-';
+                        btnMenos.style.background = '#00b900';
+                        btnMenos.style.color = 'white';
+                        btnMenos.style.border = 'none';
+                    }
+                } else {
+                    if(btnInitial) btnInitial.style.display = 'flex';
+                    if(qtyControl) qtyControl.style.display = 'none';
+                }
+            });
+        }
+
+        function agregarProducto(id) {
+            const card = document.querySelector(`.product-card[data-id="${id}"]`);
+            const nombre = card.getAttribute('data-nombre');
+            const precio = parseFloat(card.getAttribute('data-precio'));
+            if (!carritoLocal[id]) { carritoLocal[id] = { nombre: nombre, precio: precio, qty: 1 }; } 
+            else { carritoLocal[id].qty++; }
+            localStorage.setItem('agro_carrito_obj', JSON.stringify(carritoLocal));
+            renderizarCarrito();
+        }
+
+        function modificarQty(id, cambio) {
+            if (carritoLocal[id]) {
+                carritoLocal[id].qty += cambio;
+                if (carritoLocal[id].qty <= 0) { delete carritoLocal[id]; }
+                localStorage.setItem('agro_carrito_obj', JSON.stringify(carritoLocal));
+                renderizarCarrito();
+            }
+        }
+    </script>
+
+    <!-- El archivo app.js gestiona globalmente la sesión y el número de la burbuja roja -->
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Producto - AIDP</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="navbar-tottus">
+        <div class="header-left">
+            <a href="index.html" class="logo-container">
+                <img src="img/logoagroperu.jpg" alt="Agroinperu" class="logo-drop">
+                <span class="logo-text">
+                    <span class="text-blue">AGROIN</span><span class="text-red">PERU</span> <span class="text-blue">S.A.C</span>
+                </span>
+            </a>
+            <button class="btn-menu-tottus" id="btn-main-menu">
+                <span>☰</span> Menú
+            </button>
+        </div>
+
+        <div class="header-search">
+            <input type="text" placeholder="Buscar en Agroinperu (conexiones, válvulas, mangueras...)" id="header-search-input">
+            <button type="button" class="btn-search" id="btn-header-search">🔍</button>
+        </div>
+
+        <div class="header-right">
+            <div class="user-session-container">
+                <div id="user-trigger" class="user-trigger">
+                    <div class="user-text-box">
+                        <span class="user-greeting-label">Hola,</span>
+                        <span class="user-name-label" id="user-display-name">Inicia sesión ⌄</span>
+                    </div>
+                </div>
+                
+                <div id="user-dropdown-menu" class="user-dropdown-tottus">
+                    <p id="dropdown-user-full">Cardenas, Gian</p>
+                    <a href="#">Mi cuenta</a>
+                    <button id="btn-logout-tottus" class="btn-logout-tottus">Cerrar Sesión</button>
+                </div>
+            </div>
+
+            <a href="#" class="nav-extra-link">Mi cuenta</a>
+
+            <a href="#" class="cart-tottus">
+                🛒 <span class="cart-badge" id="cart-counter">0</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 40px;">
+        <a href="index.html" class="back-link">← Volver al catálogo</a>
+        
+        <div class="product-details">
+            <div class="product-image">
+                <img id="detalle-img" src="" alt="Producto">
+            </div>
+            <div class="product-info">
+                <span class="badge" style="width: max-content;">Riego Tecnificado</span>
+                <h2 id="detalle-nombre">Cargando...</h2>
+                <p class="price-large" id="detalle-precio">S/ 0.00</p>
+                <p class="description">
+                    Producto especializado para sistemas de riego tecnificado. 
+                    Consulta disponibilidad de stock, medidas específicas (diámetro/pulgadas) y precios por volumen.
+                </p>
+                
+                <div class="cart-controls" style="max-width: 300px;">
+                    <button class="btn-add-initial" id="btn-add-main" onclick="agregarProductoActual()">+ Agregar al carrito</button>
+                    <div class="qty-control" id="qty-control-main" style="display: none;">
+                        <button class="qty-btn" id="btn-menos" onclick="modificarQtyActual(-1)">🗑️</button>
+                        <span class="qty-val" id="qty-val-main">1 un</span>
+                        <button class="qty-btn" onclick="modificarQtyActual(1)">+</button>
+                    </div>
+                </div>
+
+                <div class="contact-actions">
+                    <a id="link-whatsapp" href="#" target="_blank" class="btn-contact btn-whatsapp">📱 Cotizar por WhatsApp</a>
+                    <a id="link-email" href="#" class="btn-contact btn-email">✉️ Enviar Correo</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- SCRIPT ESPECÍFICO DE ESTA PÁGINA (Pintar detalles) -->
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const prodId = urlParams.get('id');
+        
+        // Si no hay ID en la URL, devolvemos al usuario al inicio
+        if(!prodId) { window.location.href = 'index.html'; }
+
+        const prodNombre = urlParams.get('nombre') || "Producto Desconocido";
+        const prodPrecio = parseFloat(urlParams.get('precio')) || 0;
+
+        document.getElementById('detalle-nombre').textContent = prodNombre;
+        document.getElementById('detalle-precio').textContent = `Precio ref: S/ ${prodPrecio.toFixed(2)}`;
+        
+        let placeholderText = prodNombre.split(' ')[0] + '+' + (prodNombre.split(' ')[1] || ''); 
+        document.getElementById('detalle-img').src = `https://placehold.co/600x450/e2e8f0/64748b?text=${placeholderText}`;
+
+        const telefonoEmpresa = "51934757123";
+        const correoEmpresa = "agrointegraldelperu@gmail.com";
+        
+        const mensajeWa = encodeURIComponent(`Hola Agro Integral del Perú, quisiera consultar stock y medidas de: ${prodNombre}`);
+        document.getElementById('link-whatsapp').href = `https://wa.me/${telefonoEmpresa}?text=${mensajeWa}`;
+
+        const asuntoCorreo = encodeURIComponent(`Consulta de catálogo web: ${prodNombre}`);
+        const cuerpoCorreo = encodeURIComponent(`Hola,\n\nEstoy interesado en adquirir el producto "${prodNombre}".\nPor favor, envíenme más información sobre dimensiones disponibles, stock y precios por mayor.\n\nGracias.`);
+        document.getElementById('link-email').href = `mailto:${correoEmpresa}?subject=${asuntoCorreo}&body=${cuerpoCorreo}`;
+
+        let carritoLocal = JSON.parse(localStorage.getItem('agro_carrito_obj')) || {};
+
+        function renderizarCarritoDetalle() {
+            const btnInitial = document.getElementById('btn-add-main');
+            const qtyControl = document.getElementById('qty-control-main');
+            const qtyVal = document.getElementById('qty-val-main');
+            const btnMenos = document.getElementById('btn-menos');
+
+            if (carritoLocal[prodId] && carritoLocal[prodId].qty > 0) {
+                btnInitial.style.display = 'none';
+                qtyControl.style.display = 'flex';
+                qtyVal.textContent = carritoLocal[prodId].qty + ' un';
+
+                if (carritoLocal[prodId].qty === 1) {
+                    btnMenos.textContent = '🗑️';
+                    btnMenos.style.background = 'white';
+                    btnMenos.style.color = '#00b900';
+                    btnMenos.style.border = '1px solid #00b900';
+                } else {
+                    btnMenos.textContent = '-';
+                    btnMenos.style.background = '#00b900';
+                    btnMenos.style.color = 'white';
+                    btnMenos.style.border = 'none';
+                }
+            } else {
+                btnInitial.style.display = 'flex';
+                qtyControl.style.display = 'none';
+            }
+
+            // Actualizar contador del header llamando a la función global de app.js
+            if(typeof actualizarContadorCarrito === 'function') {
+                actualizarContadorCarrito();
+            }
+        }
+
+        function agregarProductoActual() {
+            if (!carritoLocal[prodId]) { carritoLocal[prodId] = { nombre: prodNombre, precio: prodPrecio, qty: 1 }; } 
+            else { carritoLocal[prodId].qty++; }
+            localStorage.setItem('agro_carrito_obj', JSON.stringify(carritoLocal));
+            renderizarCarritoDetalle();
+        }
+
+        function modificarQtyActual(cambio) {
+            if (carritoLocal[prodId]) {
+                carritoLocal[prodId].qty += cambio;
+                if (carritoLocal[prodId].qty <= 0) { delete carritoLocal[prodId]; }
+                localStorage.setItem('agro_carrito_obj', JSON.stringify(carritoLocal));
+                renderizarCarritoDetalle();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', renderizarCarritoDetalle);
+    </script>
+
+    <!-- SCRIPT GLOBAL (Debe ir siempre al final) -->
+    <script src="js/app.js"></script>
+</body>
+</html>

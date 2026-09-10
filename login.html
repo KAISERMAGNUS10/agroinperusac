@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGROINPERU - Iniciar Sesión</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <main class="split-layout">
+        <!-- Panel Izquierdo (Informativo) -->
+        <section class="left-panel">
+            <div class="logo">
+                <img src="img/logoagroperu.jpg" alt="Icono" class="logo-icon">
+                <div class="logo-text">
+                    <span class="text-cyan">AGROIN</span><span class="text-red">PERU</span> <span class="text-cyan">S.A.C</span>
+                </div>
+            </div>
+            
+            <div class="hero-content">
+                <h1>Tu proveedor de confianza para insumos agrícolas y sistemas de riego.</h1>
+                <p>Accede a fertilizantes certificados, tuberías y válvulas de primera línea. Todo en un solo lugar con despacho inmediato a nivel nacional.</p>
+                
+                <ul class="features">
+                    <li>
+                        <strong>✓ Insumos Certificados</strong>
+                        <span>Cumplimiento garantizado de estándares de calidad.</span>
+                    </li>
+                    <li>
+                        <strong>✓ Precios de Distribuidor</strong>
+                        <span>El mejor valor para tu campaña agrícola.</span>
+                    </li>
+                    <li>
+                        <strong>✓ Soporte Técnico Especializado</strong>
+                        <span>Asesoría gratuita con ingenieros agrónomos.</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <footer class="panel-footer">
+                © 2026 AGROINPERU S.A.C. Todos los derechos reservados.
+            </footer>
+        </section>
+
+        <!-- Panel Derecho (Formularios interactivos) -->
+        <section class="right-panel">
+            <div class="forms-container">
+                
+                <!-- SECCIÓN DE LOGIN -->
+                <div class="form-card" id="login-section">
+                    <h2>Iniciar Sesión</h2>
+                    <p class="subtitle">Ingresa a tu cuenta para gestionar tus pedidos</p>
+                    
+                    <form id="form-login">
+                        <div class="input-group">
+                            <label>Correo electrónico</label>
+                            <input type="email" id="login-email" placeholder="✉ cliente@agroinperu.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Contraseña</label>
+                            <input type="password" id="login-pass" placeholder="🔒 ••••••••••" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Iniciar Sesión</button>
+                    </form>
+                    
+                    <div class="divider">
+                        ¿No tienes una cuenta? <a href="#" id="btn-show-register" style="color: #00AEEF; font-weight: bold; text-decoration: none;">Regístrate aquí</a>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN DE REGISTRO -->
+                <div class="form-card hidden" id="register-section">
+                    <h2>Registrarse como Cliente</h2>
+                    <p class="subtitle">Completa el formulario para registrarte en la plataforma</p>
+                    
+                    <form id="form-register">
+                        <div class="input-group">
+                            <label>Nombre completo</label>
+                            <input type="text" id="reg-name" placeholder="Ej. Juan Pérez" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Correo electrónico</label>
+                            <input type="email" id="reg-email" placeholder="correo@ejemplo.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Contraseña</label>
+                            <input type="password" id="reg-pass" placeholder="Mínimo 8 caracteres" required>
+                        </div>
+                        <button type="submit" class="btn-secondary">Crear cuenta</button>
+                    </form>
+
+                    <div class="divider">
+                        ¿Ya tienes una cuenta? <a href="#" id="btn-show-login" style="color: #0F4782; font-weight: bold; text-decoration: none;">Inicia sesión</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- SCRIPT ÚNICO DE FUNCIONALIDAD LOCAL (Registro y Autenticación) -->
+    <script>
+        const loginSection = document.getElementById('login-section');
+        const registerSection = document.getElementById('register-section');
+        const btnShowRegister = document.getElementById('btn-show-register');
+        const btnShowLogin = document.getElementById('btn-show-login');
+
+        btnShowRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginSection.classList.add('hidden');
+            registerSection.classList.remove('hidden');
+        });
+
+        btnShowLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerSection.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+        });
+
+        document.getElementById('form-register').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const pass = document.getElementById('reg-pass').value;
+
+            let users = JSON.parse(localStorage.getItem('agro_users')) || [];
+            
+            if(users.find(u => u.email === email)) {
+                alert('Este correo ya está registrado.');
+                return;
+            }
+
+            users.push({ name, email, pass });
+            localStorage.setItem('agro_users', JSON.stringify(users));
+            alert('Cuenta creada con éxito. Ahora puedes iniciar sesión.');
+            
+            btnShowLogin.click();
+        });
+
+        document.getElementById('form-login').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
+
+            let users = JSON.parse(localStorage.getItem('agro_users')) || [];
+            const user = users.find(u => u.email === email && u.pass === pass);
+
+            if (user) {
+                localStorage.setItem('usuario_agro', user.name);
+                window.location.href = 'index.html';
+            } else {
+                alert('Correo o contraseña incorrectos.');
+            }
+        });
+    </script>
+
+    <!-- SCRIPT GLOBAL (Carga al final para no interrumpir el DOM de esta página) -->
+    <script src="js/app.js"></script>
+</body>
+</html>
