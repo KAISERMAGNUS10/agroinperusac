@@ -87,6 +87,14 @@
                 <span>Modalidad</span>
                 <strong>Recojo presencial en tienda</strong>
             </div>
+            <div class="ticket-info-row">
+                <span>Recoge</span>
+                <strong id="ticket-recoge-nombre">—</strong>
+            </div>
+            <div class="ticket-info-row">
+                <span>DNI</span>
+                <strong id="ticket-recoge-dni">—</strong>
+            </div>
 
             <div id="ticket-items-list"></div>
 
@@ -105,8 +113,14 @@
         // (Ideal a futuro: reemplazar por el detalle real de la orden ya procesada)
         document.addEventListener('DOMContentLoaded', () => {
             const carritoLocal = JSON.parse(localStorage.getItem('agro_carrito_obj')) || {};
+            const datosRecojo = JSON.parse(localStorage.getItem('agro_datos_recojo')) || null;
             const itemsList = document.getElementById('ticket-items-list');
             let total = 0;
+
+            if (datosRecojo) {
+                document.getElementById('ticket-recoge-nombre').textContent = datosRecojo.nombre || '—';
+                document.getElementById('ticket-recoge-dni').textContent = datosRecojo.dni || '—';
+            }
 
             Object.values(carritoLocal).forEach(item => {
                 const nombre = item.nombre || item.name || "Producto Agro";
@@ -126,6 +140,14 @@
             document.getElementById('ticket-date').textContent = new Date().toLocaleDateString('es-PE', {
                 day: '2-digit', month: 'long', year: 'numeric'
             });
+
+            // El pedido ya quedó confirmado: se limpia el carro y los
+            // datos de recojo para que no queden pegados en la próxima compra.
+            localStorage.removeItem('agro_carrito_obj');
+            localStorage.removeItem('agro_datos_recojo');
+            if (typeof actualizarContadorCarrito === 'function') {
+                actualizarContadorCarrito();
+            }
         });
     </script>
 </body>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGROINPERU - Datos de Recojo</title>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/checkout.css">
+</head>
+<body>
+
+    <!-- CABECERA — idéntica al resto del sitio -->
+    <header class="navbar-tottus">
+        <div class="header-left">
+            <a href="index.html" class="logo-container">
+                <img src="img/logoagroperu.jpg" alt="Agroinperu" class="logo-drop">
+                <span class="logo-text">
+                    <span class="text-blue">AGROIN</span><span class="text-red">PERU</span> <span class="text-blue">S.A.C</span>
+                </span>
+            </a>
+            <button class="btn-menu-tottus" id="btn-main-menu">
+                <span>☰</span> Menú
+            </button>
+        </div>
+
+        <div class="header-search">
+            <input type="text" placeholder="Buscar en Agroinperu (conexiones, válvulas, mangueras...)" id="header-search-input">
+            <button type="button" class="btn-search" id="btn-header-search">🔍</button>
+        </div>
+
+        <div class="header-right">
+            <div class="user-session-container">
+                <div id="user-trigger" class="user-trigger">
+                    <div class="user-text-box">
+                        <span class="user-greeting-label">Hola,</span>
+                        <span class="user-name-label" id="user-display-name">Inicia sesión ⌄</span>
+                    </div>
+                </div>
+
+                <div id="user-dropdown-menu" class="user-dropdown-tottus">
+                    <p id="dropdown-user-full">Cargando...</p>
+                    <a href="#">Mi cuenta</a>
+                    <button id="btn-logout-tottus" class="btn-logout-tottus">Cerrar Sesión</button>
+                </div>
+            </div>
+
+            <a href="#" class="nav-extra-link">Mi cuenta</a>
+
+            <a href="carrito.html" class="cart-tottus">
+                🛒 <span class="cart-badge" id="cart-counter">0</span>
+            </a>
+        </div>
+    </header>
+
+    <div id="menu-overlay" class="menu-overlay"></div>
+
+    <div id="side-menu" class="side-menu">
+        <div class="side-menu-header">
+            <h2>Categorías</h2>
+            <button id="btn-close-menu" class="btn-close-menu">✖</button>
+        </div>
+
+        <div class="side-menu-content">
+            <label><input type="checkbox" checked> Conexiones HDPE</label>
+            <label><input type="checkbox" checked> Válvulas y Portaválvulas</label>
+            <label><input type="checkbox"> Aspersores</label>
+            <label><input type="checkbox"> Mangueras</label>
+        </div>
+    </div>
+
+    <!-- CONTENIDO DEL CHECKOUT -->
+    <main class="checkout-container">
+
+        <section class="checkout-form-section">
+            <h2>Datos para el recojo en tienda</h2>
+
+            <div class="pickup-only-notice">
+                🏪 <strong>Recojo 100% presencial.</strong> No procesamos pagos en línea:
+                pagas directamente en tienda al recoger tu pedido.
+            </div>
+
+            <form id="form-checkout" novalidate>
+                <div class="input-group">
+                    <label>Nombre completo de quien recoge</label>
+                    <input type="text" id="chk-nombre" placeholder="Ej. Juan Pérez" required>
+                    <span class="input-error" id="err-nombre"></span>
+                </div>
+
+                <div class="input-group">
+                    <label>DNI de quien recoge</label>
+                    <input type="text" id="chk-dni" placeholder="8 dígitos" maxlength="8" inputmode="numeric" required>
+                    <span class="input-error" id="err-dni"></span>
+                </div>
+
+                <div class="input-group">
+                    <label>Teléfono de contacto (opcional)</label>
+                    <input type="tel" id="chk-telefono" placeholder="9XXXXXXXX" maxlength="9" inputmode="numeric">
+                </div>
+
+                <button type="submit" class="btn-confirm-order">Confirmar pedido</button>
+            </form>
+        </section>
+
+        <section class="checkout-summary-section">
+            <h3>Resumen del pedido</h3>
+            <div id="checkout-items-list"></div>
+            <div class="summary-row summary-total">
+                <span>Total a pagar en tienda</span>
+                <span id="checkout-total">S/ 0.00</span>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="js/app.js"></script>
+    <script>
+        let carritoLocal = JSON.parse(localStorage.getItem('agro_carrito_obj')) || {};
+
+        // Seguridad: si no hay sesión iniciada o el carro está vacío,
+        // no tiene sentido estar en esta página.
+        if (!localStorage.getItem('usuario_agro')) {
+            window.location.href = 'login.html';
+        }
+        if (Object.keys(carritoLocal).length === 0) {
+            window.location.href = 'carrito.html';
+        }
+
+        function renderizarResumenCheckout() {
+            const itemsList = document.getElementById('checkout-items-list');
+            const totalEl = document.getElementById('checkout-total');
+            itemsList.innerHTML = '';
+            let total = 0;
+
+            Object.values(carritoLocal).forEach(item => {
+                const nombre = item.nombre || item.name || "Producto Agro";
+                const precio = parseFloat(item.precio || item.price || 0);
+                const cantidad = parseInt(item.cantidad || item.qty || 1);
+                total += precio * cantidad;
+
+                itemsList.innerHTML += `
+                    <div class="summary-row">
+                        <span>${nombre} × ${cantidad}</span>
+                        <span>S/ ${(precio * cantidad).toFixed(2)}</span>
+                    </div>`;
+            });
+
+            totalEl.textContent = `S/ ${total.toFixed(2)}`;
+        }
+
+        document.getElementById('form-checkout').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const nombre = document.getElementById('chk-nombre').value.trim();
+            const dni = document.getElementById('chk-dni').value.trim();
+            const telefono = document.getElementById('chk-telefono').value.trim();
+            const errNombre = document.getElementById('err-nombre');
+            const errDni = document.getElementById('err-dni');
+            errNombre.textContent = '';
+            errDni.textContent = '';
+
+            let valido = true;
+
+            if (nombre.length < 3) {
+                errNombre.textContent = 'Ingresa el nombre completo.';
+                valido = false;
+            }
+            if (!/^\d{8}$/.test(dni)) {
+                errDni.textContent = 'El DNI debe tener 8 dígitos.';
+                valido = false;
+            }
+            if (!valido) return;
+
+            // Guarda los datos de recojo para mostrarlos en el ticket
+            localStorage.setItem('agro_datos_recojo', JSON.stringify({
+                nombre, dni, telefono
+            }));
+
+            window.location.href = 'ticket.html';
+        });
+
+        document.addEventListener('DOMContentLoaded', renderizarResumenCheckout);
+    </script>
+</body>
+</html>
