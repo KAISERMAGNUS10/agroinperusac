@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AIDP - Agro Integral del Perú</title>
+    <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -149,22 +150,6 @@
     <!-- Script exclusivo para el index (Menú y Grid de Productos) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const btnMainMenu = document.getElementById('btn-main-menu');
-            const sideMenu = document.getElementById('side-menu');
-            const menuOverlay = document.getElementById('menu-overlay');
-            const btnCloseMenu = document.getElementById('btn-close-menu');
-
-            const toggleMenu = () => {
-                if (sideMenu && menuOverlay) {
-                    sideMenu.classList.toggle('active');
-                    menuOverlay.classList.toggle('active');
-                }
-            };
-
-            if (btnMainMenu) btnMainMenu.addEventListener('click', toggleMenu);
-            if (btnCloseMenu) btnCloseMenu.addEventListener('click', toggleMenu);
-            if (menuOverlay) menuOverlay.addEventListener('click', toggleMenu);
-
             renderizarCarrito();
         });
 

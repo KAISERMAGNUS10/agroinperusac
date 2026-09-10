@@ -1,0 +1,80 @@
+/* ==========================================
+   ESTILOS PROPIOS DE LA PÁGINA TICKET
+   (El header vive en header.css, no lo dupliques aquí)
+========================================== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.ticket-container {
+    max-width: 500px;
+    margin: 40px auto 60px auto;
+    padding: 0 20px;
+}
+
+.ticket-card {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 35px 30px;
+    text-align: center;
+}
+
+.ticket-success-icon {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    margin: 0 auto 15px auto;
+    background: #00c853;
+    color: white;
+    font-size: 28px;
+    border-radius: 50%;
+}
+
+.ticket-card h2 {
+    margin: 0 0 8px 0;
+    color: #333;
+}
+
+.ticket-subtitle {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.ticket-info-row {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #333;
+}
+
+.ticket-total-row {
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: none;
+    border-top: 1px solid #ddd;
+    margin-top: 5px;
+    padding-top: 15px;
+}
+
+.btn-back-store {
+    display: block;
+    margin-top: 25px;
+    background: #0F4782;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.btn-back-store:hover {
+    background: #0b335e;
+}

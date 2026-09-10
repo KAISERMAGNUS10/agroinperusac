@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGROINPERU - Ticket de Compra</title>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/ticket.css">
+</head>
+<body>
+
+    <!-- CABECERA — idéntica a index.html, carrito.html y producto.html -->
+    <header class="navbar-tottus">
+        <div class="header-left">
+            <a href="index.html" class="logo-container">
+                <img src="img/logoagroperu.jpg" alt="Agroinperu" class="logo-drop">
+                <span class="logo-text">
+                    <span class="text-blue">AGROIN</span><span class="text-red">PERU</span> <span class="text-blue">S.A.C</span>
+                </span>
+            </a>
+            <button class="btn-menu-tottus" id="btn-main-menu">
+                <span>☰</span> Menú
+            </button>
+        </div>
+
+        <div class="header-search">
+            <input type="text" placeholder="Buscar en Agroinperu (conexiones, válvulas, mangueras...)" id="header-search-input">
+            <button type="button" class="btn-search" id="btn-header-search">🔍</button>
+        </div>
+
+        <div class="header-right">
+            <div class="user-session-container">
+                <div id="user-trigger" class="user-trigger">
+                    <div class="user-text-box">
+                        <span class="user-greeting-label">Hola,</span>
+                        <span class="user-name-label" id="user-display-name">Inicia sesión ⌄</span>
+                    </div>
+                </div>
+
+                <div id="user-dropdown-menu" class="user-dropdown-tottus">
+                    <p id="dropdown-user-full">Cargando...</p>
+                    <a href="#">Mi cuenta</a>
+                    <button id="btn-logout-tottus" class="btn-logout-tottus">Cerrar Sesión</button>
+                </div>
+            </div>
+
+            <a href="#" class="nav-extra-link">Mi cuenta</a>
+
+            <a href="carrito.html" class="cart-tottus">
+                🛒 <span class="cart-badge" id="cart-counter">0</span>
+            </a>
+        </div>
+    </header>
+
+    <div id="menu-overlay" class="menu-overlay"></div>
+
+    <div id="side-menu" class="side-menu">
+        <div class="side-menu-header">
+            <h2>Categorías</h2>
+            <button id="btn-close-menu" class="btn-close-menu">✖</button>
+        </div>
+
+        <div class="side-menu-content">
+            <label><input type="checkbox" checked> Conexiones HDPE</label>
+            <label><input type="checkbox" checked> Válvulas y Portaválvulas</label>
+            <label><input type="checkbox"> Aspersores</label>
+            <label><input type="checkbox"> Mangueras</label>
+        </div>
+    </div>
+
+    <!-- CONTENIDO DEL TICKET -->
+    <main class="ticket-container">
+        <div class="ticket-card">
+            <div class="ticket-success-icon">✔</div>
+            <h2>¡Compra confirmada!</h2>
+            <p class="ticket-subtitle">Muestra este ticket al recoger tu pedido en tienda.</p>
+
+            <div class="ticket-info-row">
+                <span>N° de orden</span>
+                <strong id="ticket-order-id">—</strong>
+            </div>
+            <div class="ticket-info-row">
+                <span>Fecha</span>
+                <strong id="ticket-date">—</strong>
+            </div>
+            <div class="ticket-info-row">
+                <span>Modalidad</span>
+                <strong>Recojo presencial en tienda</strong>
+            </div>
+
+            <div id="ticket-items-list"></div>
+
+            <div class="ticket-info-row ticket-total-row">
+                <span>Total pagado</span>
+                <strong id="ticket-total">S/ 0.00</strong>
+            </div>
+
+            <a href="index.html" class="btn-back-store">Volver a la tienda</a>
+        </div>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Pinta el resumen leyendo el último carrito guardado.
+        // (Ideal a futuro: reemplazar por el detalle real de la orden ya procesada)
+        document.addEventListener('DOMContentLoaded', () => {
+            const carritoLocal = JSON.parse(localStorage.getItem('agro_carrito_obj')) || {};
+            const itemsList = document.getElementById('ticket-items-list');
+            let total = 0;
+
+            Object.values(carritoLocal).forEach(item => {
+                const nombre = item.nombre || item.name || "Producto Agro";
+                const precio = parseFloat(item.precio || item.price || 0);
+                const cantidad = parseInt(item.cantidad || item.qty || 1);
+                total += precio * cantidad;
+
+                itemsList.innerHTML += `
+                    <div class="ticket-info-row">
+                        <span>${nombre} × ${cantidad}</span>
+                        <strong>S/ ${(precio * cantidad).toFixed(2)}</strong>
+                    </div>`;
+            });
+
+            document.getElementById('ticket-total').textContent = `S/ ${total.toFixed(2)}`;
+            document.getElementById('ticket-order-id').textContent = '#' + Date.now().toString().slice(-8);
+            document.getElementById('ticket-date').textContent = new Date().toLocaleDateString('es-PE', {
+                day: '2-digit', month: 'long', year: 'numeric'
+            });
+        });
+    </script>
+</body>
+</html>

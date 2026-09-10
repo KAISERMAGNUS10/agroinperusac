@@ -4,39 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AGROINPERU - Carro de Compras</title>
+    <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/carrito.css">
+    <!-- header.css trae la MISMA cabecera que index.html y producto.html -->
 </head>
 <body>
 
-    <!-- CABECERA PRINCIPAL EXACTA AL INDEX -->
-    <header class="header-principal">
-        <div class="left-section">
+    <!-- CABECERA — idéntica a index.html y producto.html -->
+    <header class="navbar-tottus">
+        <div class="header-left">
             <a href="index.html" class="logo-container">
-                <img src="img/logoagroperu.jpg" alt="Logo" class="logo-icon" onerror="this.style.display='none'">
-                <div class="logo-text">
-                    <span class="text-cyan">AGROIN</span><span class="text-red">PERU</span> <span class="text-cyan">S.A.C</span>
-                </div>
+                <img src="img/logoagroperu.jpg" alt="Agroinperu" class="logo-drop">
+                <span class="logo-text">
+                    <span class="text-blue">AGROIN</span><span class="text-red">PERU</span> <span class="text-blue">S.A.C</span>
+                </span>
             </a>
-            <button class="btn-menu">☰ Menú</button>
+            <button class="btn-menu-tottus" id="btn-main-menu">
+                <span>☰</span> Menú
+            </button>
         </div>
 
-        <div class="search-container">
-            <input type="text" class="search-input" placeholder="Buscar en Agroinperu (conexiones, válvulas, mangueras...)">
-            <button class="search-btn">🔍</button>
+        <div class="header-search">
+            <input type="text" placeholder="Buscar en Agroinperu (conexiones, válvulas, mangueras...)" id="header-search-input">
+            <button type="button" class="btn-search" id="btn-header-search">🔍</button>
         </div>
 
-        <div class="right-section">
-            <div class="user-info" id="user-display-header">
-                <small>Hola,</small>
-                <strong>Inicia sesión</strong>
+        <div class="header-right">
+            <div class="user-session-container">
+                <div id="user-trigger" class="user-trigger">
+                    <div class="user-text-box">
+                        <span class="user-greeting-label">Hola,</span>
+                        <span class="user-name-label" id="user-display-name">Inicia sesión ⌄</span>
+                    </div>
+                </div>
+
+                <div id="user-dropdown-menu" class="user-dropdown-tottus">
+                    <p id="dropdown-user-full">Cargando...</p>
+                    <a href="#">Mi cuenta</a>
+                    <button id="btn-logout-tottus" class="btn-logout-tottus">Cerrar Sesión</button>
+                </div>
             </div>
-            <a href="#" class="account-link">Mi cuenta</a>
-            <a href="carrito.html" class="header-cart-icon" title="Ver carrito">
-                🛒
-                <span class="cart-badge" id="header-cart-badge">0</span>
+
+            <a href="#" class="nav-extra-link">Mi cuenta</a>
+
+            <a href="#" class="cart-tottus">
+                🛒 <span class="cart-badge" id="cart-counter">0</span>
             </a>
         </div>
     </header>
+
+    <div id="menu-overlay" class="menu-overlay"></div>
+
+    <div id="side-menu" class="side-menu">
+        <div class="side-menu-header">
+            <h2>Categorías</h2>
+            <button id="btn-close-menu" class="btn-close-menu">✖</button>
+        </div>
+
+        <div class="side-menu-content">
+            <label><input type="checkbox" checked> Conexiones HDPE</label>
+            <label><input type="checkbox" checked> Válvulas y Portaválvulas</label>
+            <label><input type="checkbox"> Aspersores</label>
+            <label><input type="checkbox"> Mangueras</label>
+        </div>
+    </div>
 
     <!-- CONTENEDOR PRINCIPAL TIPO TOTTUS -->
     <main class="cart-container">
@@ -75,8 +106,6 @@
         const summaryTotal = document.getElementById('summary-total');
         const summarySubtotal = document.getElementById('summary-subtotal');
         const btnContinue = document.getElementById('btn-continue-checkout');
-        const headerCartBadge = document.getElementById('header-cart-badge');
-        const userDisplayHeader = document.getElementById('user-display-header');
 
         // DIBUJA LOS PRODUCTOS EN PANTALLA
         function renderizarCarritoPagina() {
@@ -140,9 +169,13 @@
             // Actualiza montos y contadores
             cartTitleQty.textContent = totalItems;
             summaryQty.textContent = totalItems;
-            headerCartBadge.textContent = totalItems;
             summarySubtotal.textContent = `S/ ${totalPrice.toFixed(2)}`;
             summaryTotal.textContent = `S/ ${totalPrice.toFixed(2)}`;
+
+            // El badge del header (🛒) lo actualiza app.js, así queda igual en toda la web
+            if (typeof actualizarContadorCarrito === 'function') {
+                actualizarContadorCarrito();
+            }
         }
 
         // SUMA O RESTA CANTIDADES
@@ -174,14 +207,6 @@
             }
         };
 
-        // COMPRUEBA EL ESTADO DEL USUARIO EN LA CABECERA
-        function CargarEstadoUsuarioHeader() {
-            const usuarioLogueado = localStorage.getItem('usuario_agro');
-            if (usuarioLogueado && userDisplayHeader) {
-                userDisplayHeader.innerHTML = `<small>Hola,</small><strong>${usuarioLogueado}</strong>`;
-            }
-        }
-
         // CONTINUAR A LA ENTREGA / LOGIN
         btnContinue.addEventListener('click', () => {
             const usuarioLogueado = localStorage.getItem('usuario_agro');
@@ -195,7 +220,6 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             renderizarCarritoPagina();
-            CargarEstadoUsuarioHeader();
         });
     </script>
 </body>

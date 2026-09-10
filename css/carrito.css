@@ -1,134 +1,13 @@
 /* ==========================================
-   ESTILOS GENERALES Y CABECERA (IGUAL AL INDEX / TOTTUS)
+   ESTILOS GENERALES DE LA PÁGINA CARRITO
+   (El header vive ahora en header.css, compartido por
+   todas las páginas — no dupliques esas reglas aquí)
 ========================================== */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-}
-
-/* Header principal idéntico al Index */
-.header-principal {
-    background: white;
-    padding: 8px 30px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    height: 55px;
-    box-sizing: border-box;
-}
-
-.left-section {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-/* Logo oficial */
-.logo-container {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    gap: 8px;
-}
-.logo-icon {
-    width: 28px;
-    height: auto;
-}
-.logo-text {
-    font-size: 18px;
-    font-weight: 900;
-    font-family: Arial, sans-serif;
-}
-.text-cyan { color: #00AEEF; }
-.text-red { color: #E30613; }
-
-/* Botón Menú */
-.btn-menu {
-    background: none;
-    border: none;
-    font-size: 14px;
-    font-weight: bold;
-    color: #333;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-/* Barra de búsqueda central */
-.search-container {
-    flex: 1;
-    max-width: 550px;
-    display: flex;
-    align-items: center;
-}
-.search-input {
-    width: 100%;
-    padding: 8px 15px;
-    border: 1px solid #00AEEF;
-    border-radius: 20px 0 0 20px;
-    outline: none;
-    font-size: 13px;
-}
-.search-btn {
-    background: #0F4782;
-    color: white;
-    border: none;
-    padding: 8px 18px;
-    border-radius: 0 20px 20px 0;
-    cursor: pointer;
-}
-
-/* Sección derecha (Usuario y Carrito) */
-.right-section {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    font-size: 13px;
-}
-.user-info {
-    text-align: right;
-    line-height: 1.2;
-}
-.user-info small {
-    display: block;
-    color: #777;
-    font-size: 11px;
-}
-.user-info strong {
-    color: #333;
-}
-.account-link {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-}
-
-/* Icono Carrito de la cabecera */
-.header-cart-icon {
-    position: relative;
-    text-decoration: none;
-    font-size: 20px;
-    color: #0F4782;
-}
-.cart-badge {
-    position: absolute;
-    top: -8px;
-    right: -10px;
-    background: #0F4782;
-    color: white;
-    font-size: 11px;
-    font-weight: bold;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 /* ==========================================

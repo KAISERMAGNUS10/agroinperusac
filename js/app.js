@@ -99,9 +99,31 @@ function actualizarContadorCarrito() {
 }
 
 // ==========================================
-// 4. INICIALIZACIÓN
+// 4. MENÚ LATERAL (☰) — compartido por todas las páginas
+// ==========================================
+function inicializarMenuLateral() {
+    const btnMainMenu = document.getElementById('btn-main-menu');
+    const sideMenu = document.getElementById('side-menu');
+    const menuOverlay = document.getElementById('menu-overlay');
+    const btnCloseMenu = document.getElementById('btn-close-menu');
+
+    const toggleMenu = () => {
+        if (sideMenu && menuOverlay) {
+            sideMenu.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+        }
+    };
+
+    if (btnMainMenu) btnMainMenu.addEventListener('click', toggleMenu);
+    if (btnCloseMenu) btnCloseMenu.addEventListener('click', toggleMenu);
+    if (menuOverlay) menuOverlay.addEventListener('click', toggleMenu);
+}
+
+// ==========================================
+// 5. INICIALIZACIÓN
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     inicializarSesion();
     actualizarContadorCarrito();
+    inicializarMenuLateral();
 });
