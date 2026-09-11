@@ -60,6 +60,26 @@ body {
     color: #1B7A1F;
 }
 
+.badge-cancelado {
+    background: #FDEAEA;
+    color: #C5221F;
+}
+
+.badge-pagado {
+    background: #E3F2FD;
+    color: #0D47A1;
+}
+
+.badge-listo-para-recojo {
+    background: #FFF3E0;
+    color: #E65100;
+}
+
+.badge-entregado {
+    background: #ECEFF1;
+    color: #37474F;
+}
+
 .badge-expirado {
     background: #FDEAEA;
     color: #C5221F;

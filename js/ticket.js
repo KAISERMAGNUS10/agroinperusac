@@ -65,14 +65,28 @@ function renderizarTicket(ticket) {
         qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(ticket.id)}`;
     }
 
-    // Vigencia
+    // Estado del badge: primero respeta ticket.estado (por ej. CANCELADO,
+    // puesto desde Mis Pedidos); si sigue VIGENTE, recién ahí se compara
+    // contra la fecha de expiración para mostrar EXPIRADO si corresponde.
     const badge = document.getElementById('ticket-status-badge');
-    if (ticket.fechaExpiracion) {
-        const vigente = new Date() < new Date(ticket.fechaExpiracion);
-        badge.textContent = vigente ? 'VIGENTE' : 'EXPIRADO';
-        badge.classList.toggle('badge-vigente', vigente);
-        badge.classList.toggle('badge-expirado', !vigente);
+    const estado = ticket.estado || 'VIGENTE';
+    let estadoMostrado = estado;
+
+    if (estado === 'VIGENTE' && ticket.fechaExpiracion && new Date() > new Date(ticket.fechaExpiracion)) {
+        estadoMostrado = 'EXPIRADO';
     }
+
+    const etiquetas = {
+        VIGENTE: 'VIGENTE',
+        CANCELADO: 'CANCELADO',
+        PAGADO: 'PAGADO',
+        LISTO_PARA_RECOJO: 'LISTO PARA RECOJO',
+        ENTREGADO: 'ENTREGADO',
+        EXPIRADO: 'EXPIRADO'
+    };
+
+    badge.textContent = etiquetas[estadoMostrado] || estadoMostrado;
+    badge.className = 'ticket-status-badge badge-' + estadoMostrado.toLowerCase().replace(/_/g, '-');
 }
 
 function descargarTicket(ticket) {
