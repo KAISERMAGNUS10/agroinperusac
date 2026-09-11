@@ -1,0 +1,452 @@
+/* ==========================================
+   ESTILOS DEL MÓDULO DE CAJA
+========================================== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- Header de staff (distinto al del cliente: sin buscador ni carrito) --- */
+.navbar-caja {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #0F2C4C;
+    padding: 12px 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.navbar-caja .logo-text .text-blue { color: #4DC3FF; }
+.navbar-caja .logo-text .text-red  { color: #FF6B6B; }
+
+.caja-role-badge {
+    background: #ffffff;
+    color: #0F2C4C;
+    font-size: 12.5px;
+    font-weight: bold;
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+/* --- Contenedor general --- */
+.caja-container {
+    max-width: 750px;
+    margin: 30px auto 60px auto;
+    padding: 0 20px;
+}
+
+/* --- Panel de búsqueda --- */
+.caja-search-panel {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 22px 24px;
+    margin-bottom: 20px;
+}
+
+.caja-search-panel label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.caja-search-row {
+    display: flex;
+    gap: 10px;
+}
+
+.caja-search-row input {
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 11px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+}
+
+.caja-search-row input:focus {
+    border-color: #0F4782;
+}
+
+.btn-caja-primary {
+    flex-shrink: 0;
+    background: #0F4782;
+    color: white;
+    border: none;
+    padding: 0 22px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-caja-primary:hover {
+    background: #0b335e;
+}
+
+/* --- Mensajes de estado --- */
+.caja-mensaje {
+    padding: 16px 18px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    margin-bottom: 20px;
+}
+
+.caja-mensaje-neutro {
+    background: #EAF2FA;
+    color: #0F4782;
+}
+
+.caja-mensaje-alerta {
+    background: #FDEAEA;
+    color: #C5221F;
+}
+
+/* --- Resultados múltiples (varios tickets con el mismo DNI/RUC) --- */
+.resultados-multiples {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+}
+
+.resultados-multiples h4 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.resultado-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13.5px;
+}
+
+.resultado-item:last-child { border-bottom: none; }
+
+.resultado-item button {
+    background: #EAF2FA;
+    color: #0F4782;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.resultado-item button:hover { background: #d7e7f7; }
+
+/* --- Tarjeta del pedido --- */
+.ticket-card-caja {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 26px 28px;
+}
+
+.caja-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 16px;
+    margin-bottom: 18px;
+}
+
+.caja-card-header .ticket-id {
+    font-size: 17px;
+    font-weight: bold;
+    color: #0F4782;
+}
+
+.caja-card-header .ticket-fecha {
+    font-size: 12.5px;
+    color: #888;
+    margin-top: 3px;
+}
+
+.estado-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 5px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.estado-VIGENTE   { background: #E8F5E9; color: #1B7A1F; }
+.estado-PAGADO    { background: #E3F2FD; color: #0D47A1; }
+.estado-CANCELADO { background: #FDEAEA; color: #C5221F; }
+.estado-EXPIRADO  { background: #F5F5F5; color: #9E9E9E; }
+.estado-LISTO_PARA_RECOJO { background: #FFF3E0; color: #E65100; }
+.estado-ENTREGADO { background: #ECEFF1; color: #37474F; }
+
+/* --- Bloques de datos --- */
+.caja-datos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 20px;
+    margin-bottom: 18px;
+}
+
+.caja-dato-item span {
+    display: block;
+    font-size: 11px;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+}
+
+.caja-dato-item strong {
+    font-size: 14px;
+    color: #222;
+}
+
+.caja-persona-autorizada {
+    background: #F4F7FA;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 13px;
+    color: #444;
+    margin-bottom: 18px;
+}
+
+.caja-persona-autorizada strong { color: #0F4782; }
+
+/* --- Tabla de productos --- */
+.caja-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 18px;
+    font-size: 13.5px;
+}
+
+.caja-tabla thead th {
+    text-align: left;
+    background: #F4F7FA;
+    color: #555;
+    padding: 9px 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.caja-tabla thead th:not(:first-child),
+.caja-tabla tbody td:not(:first-child) {
+    text-align: right;
+}
+
+.caja-tabla tbody td {
+    padding: 9px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+}
+
+/* --- Total a cobrar --- */
+.caja-total-block {
+    background: #E8F5E9;
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.caja-total-block span {
+    font-size: 13px;
+    font-weight: bold;
+    color: #1B7A1F;
+}
+
+.caja-total-block strong {
+    font-size: 20px;
+    color: #1B7A1F;
+}
+
+/* --- Sección de cobro --- */
+.caja-cobro-section {
+    border-top: 1px dashed #ddd;
+    padding-top: 18px;
+}
+
+.caja-cobro-section h4 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.metodo-pago-opciones {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.metodo-pago-opcion {
+    flex: 1;
+    min-width: 140px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 13.5px;
+    cursor: pointer;
+}
+
+.metodo-pago-opcion:has(input:checked) {
+    border-color: #0F4782;
+    background: #EAF2FA;
+    font-weight: bold;
+}
+
+.btn-procesar-pago {
+    width: 100%;
+    background: #00c853;
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-procesar-pago:hover:not(:disabled) { background: #00a650; }
+
+.btn-procesar-pago:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .caja-datos-grid { grid-template-columns: 1fr; }
+    .metodo-pago-opciones { flex-direction: column; }
+}
+
+/* --- Campos dinámicos según método de pago --- */
+.campos-metodo {
+    background: #F9FAFB;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+}
+
+.campos-metodo .input-group {
+    margin-bottom: 12px;
+}
+
+.campos-metodo .input-group:last-child {
+    margin-bottom: 0;
+}
+
+.campos-metodo label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.campos-metodo input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 9px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+.campos-metodo input:focus { border-color: #0F4782; outline: none; }
+
+.campos-metodo input[readonly] {
+    background: #EFEFEF;
+    font-weight: bold;
+    color: #0F4782;
+}
+
+.input-error {
+    display: block;
+    color: #E30613;
+    font-size: 12.5px;
+    margin-top: 6px;
+}
+
+/* --- Voucher de confirmación de cobro --- */
+.voucher-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 4000;
+    align-items: center;
+    justify-content: center;
+}
+
+.voucher-overlay.active {
+    display: flex;
+}
+
+.voucher-box {
+    background: white;
+    border-radius: 12px;
+    padding: 30px 28px;
+    max-width: 340px;
+    width: 90%;
+    text-align: center;
+}
+
+.voucher-check {
+    width: 54px;
+    height: 54px;
+    line-height: 54px;
+    margin: 0 auto 12px auto;
+    background: #00c853;
+    color: white;
+    font-size: 26px;
+    border-radius: 50%;
+}
+
+.voucher-box h3 {
+    margin: 0 0 20px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.voucher-row {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13.5px;
+    color: #444;
+}
+
+.voucher-row-total strong {
+    color: #1B7A1F;
+    font-size: 17px;
+}
+
+.btn-voucher-cerrar {
+    width: 100%;
+    margin-top: 20px;
+}

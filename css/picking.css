@@ -1,0 +1,196 @@
+/* ==========================================
+   ESTILOS DEL MÓDULO DE PICKING
+========================================== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- Header de staff (mismo estilo que caja.html, duplicado a propósito
+   para que este archivo no dependa de caja.css) --- */
+.navbar-caja {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #0F2C4C;
+    padding: 12px 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.navbar-caja .logo-text .text-blue { color: #4DC3FF; }
+.navbar-caja .logo-text .text-red  { color: #FF6B6B; }
+
+.caja-role-badge {
+    background: #ffffff;
+    color: #0F2C4C;
+    font-size: 12.5px;
+    font-weight: bold;
+    padding: 6px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+/* --- Contenedor general --- */
+.picking-container {
+    max-width: 800px;
+    margin: 30px auto 60px auto;
+    padding: 0 20px;
+}
+
+.picking-container h2 {
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.picking-subtitle {
+    color: #777;
+    font-size: 13.5px;
+    margin-bottom: 22px;
+}
+
+.lista-picking {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* --- Tarjeta de pedido a preparar --- */
+.picking-card {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 22px 24px;
+}
+
+.picking-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+}
+
+.picking-ticket-id {
+    font-size: 15px;
+    font-weight: bold;
+    color: #0F4782;
+}
+
+.picking-fecha {
+    font-size: 12.5px;
+    color: #888;
+    margin-top: 2px;
+}
+
+.picking-cliente {
+    font-size: 13.5px;
+    color: #333;
+    text-align: right;
+}
+
+.picking-cliente span {
+    display: block;
+    font-size: 11px;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+/* --- Checklist de productos --- */
+.picking-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.picking-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.picking-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    cursor: pointer;
+    accent-color: #00c853;
+}
+
+.picking-item label {
+    flex: 1;
+    cursor: pointer;
+}
+
+.picking-item.marcado {
+    background: #F1FAF2;
+    border-color: #B7E1B9;
+}
+
+.picking-item.marcado label {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.picking-item .picking-item-cantidad {
+    font-weight: bold;
+    color: #0F4782;
+}
+
+.picking-item.marcado .picking-item-cantidad {
+    color: #1B7A1F;
+}
+
+/* --- Progreso y botón de finalizar --- */
+.picking-progreso {
+    font-size: 12.5px;
+    color: #777;
+    margin-bottom: 12px;
+}
+
+.btn-finalizar-picking {
+    width: 100%;
+    background: #00c853;
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-finalizar-picking:hover:not(:disabled) {
+    background: #00a650;
+}
+
+.btn-finalizar-picking:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.picking-empty-state {
+    text-align: center;
+    color: #777;
+    padding: 60px 0;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .picking-card-header { flex-direction: column; }
+    .picking-cliente { text-align: left; }
+}

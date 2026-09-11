@@ -35,6 +35,11 @@ function renderizarTicket(ticket) {
     document.getElementById('t-doc').textContent = ticket.documentoNumero || '—';
     document.getElementById('t-email').textContent = ticket.correo || '—';
 
+    // RF28/RF33: persona autorizada para el recojo (asignada desde Mis Pedidos)
+    const persona = ticket.personaAutorizada;
+    document.getElementById('t-autorizado-nombre').textContent = persona ? persona.nombre : 'Titular de la compra';
+    document.getElementById('t-autorizado-dni').textContent = persona ? persona.dni : '—';
+
     // Tabla de productos
     const productos = Array.isArray(ticket.productos) ? ticket.productos : [];
     const tbody = document.getElementById('t-items');

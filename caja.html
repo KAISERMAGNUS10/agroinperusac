@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGROINPERU - Módulo de Caja</title>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/caja.css">
+</head>
+<body>
+
+    <!-- CABECERA DE STAFF — reutiliza el logo/marca, pero sin buscador de
+         productos ni carrito: este módulo es para el Cajero, no el cliente -->
+    <header class="navbar-caja">
+        <div class="logo-container">
+            <img src="img/logoagroperu.jpg" alt="Agroinperu" class="logo-drop">
+            <span class="logo-text">
+                <span class="text-blue">AGROIN</span><span class="text-red">PERU</span> <span class="text-blue">S.A.C</span>
+            </span>
+        </div>
+        <span class="caja-role-badge">Módulo de Caja · Cajero</span>
+    </header>
+
+    <main class="caja-container">
+
+        <!-- PANEL DE BÚSQUEDA (RF22) -->
+        <section class="caja-search-panel">
+            <label for="input-busqueda">Ingresar N° de Ticket (ej. TK-2026-XXXX) o DNI / RUC del cliente</label>
+            <div class="caja-search-row">
+                <input type="text" id="input-busqueda" placeholder="TK-2026-00847  ó  12345678" autocomplete="off">
+                <button id="btn-buscar" class="btn-caja-primary">Buscar Pedido</button>
+            </div>
+        </section>
+
+        <!-- Si el DNI/RUC coincide con varios pedidos, se listan para elegir -->
+        <div id="resultados-multiples" class="resultados-multiples" style="display:none;"></div>
+
+        <!-- Estado inicial -->
+        <div id="estado-inicial" class="caja-mensaje caja-mensaje-neutro">
+            Ingresa un número de ticket o el DNI/RUC del cliente para buscar su pedido.
+        </div>
+
+        <!-- Sin resultados -->
+        <div id="ticket-no-encontrado" class="caja-mensaje caja-mensaje-alerta" style="display:none;">
+            ⚠️ No se encontró ningún pedido con ese dato. Verifica el número de ticket o documento.
+        </div>
+
+        <!-- Tarjeta del pedido encontrado (se arma dinámicamente en caja.js) -->
+        <div id="ticket-resultado" class="ticket-card-caja" style="display:none;"></div>
+
+    </main>
+
+    <!-- VOUCHER DE CONFIRMACIÓN DE COBRO -->
+    <div id="voucher-overlay" class="voucher-overlay">
+        <div class="voucher-box">
+            <div class="voucher-check">✔</div>
+            <h3>¡Pago completado con éxito!</h3>
+
+            <div class="voucher-row"><span>N° de Ticket</span><strong id="v-id">—</strong></div>
+            <div class="voucher-row voucher-row-total"><span>Total Pagado</span><strong id="v-total">S/ 0.00</strong></div>
+            <div class="voucher-row"><span>Método</span><strong id="v-metodo">—</strong></div>
+            <div class="voucher-row" id="v-fila-recibido"><span>Recibido</span><strong id="v-recibido">S/ 0.00</strong></div>
+            <div class="voucher-row" id="v-fila-vuelto"><span>Vuelto</span><strong id="v-vuelto">S/ 0.00</strong></div>
+            <div class="voucher-row" id="v-fila-operacion"><span>N° Operación</span><strong id="v-operacion">—</strong></div>
+
+            <button id="btn-nuevo-cobro" class="btn-caja-primary btn-voucher-cerrar">Realizar nuevo cobro</button>
+        </div>
+    </div>
+
+    <script src="js/caja.js"></script>
+</body>
+</html>
