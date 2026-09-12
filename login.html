@@ -64,33 +64,7 @@
                     </form>
                     
                     <div class="divider">
-                        ¿No tienes una cuenta? <a href="#" id="btn-show-register" style="color: #00AEEF; font-weight: bold; text-decoration: none;">Regístrate aquí</a>
-                    </div>
-                </div>
-
-                <!-- SECCIÓN DE REGISTRO -->
-                <div class="form-card hidden" id="register-section">
-                    <h2>Registrarse como Cliente</h2>
-                    <p class="subtitle">Completa el formulario para registrarte en la plataforma</p>
-                    
-                    <form id="form-register">
-                        <div class="input-group">
-                            <label>Nombre completo</label>
-                            <input type="text" id="reg-name" placeholder="Ej. Juan Pérez" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Correo electrónico</label>
-                            <input type="email" id="reg-email" placeholder="correo@ejemplo.com" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Contraseña</label>
-                            <input type="password" id="reg-pass" placeholder="Mínimo 8 caracteres" required>
-                        </div>
-                        <button type="submit" class="btn-secondary">Crear cuenta</button>
-                    </form>
-
-                    <div class="divider">
-                        ¿Ya tienes una cuenta? <a href="#" id="btn-show-login" style="color: #0F4782; font-weight: bold; text-decoration: none;">Inicia sesión</a>
+                        ¿No tienes una cuenta? <a href="registro.html" style="color: #00AEEF; font-weight: bold; text-decoration: none;">Regístrate aquí</a>
                     </div>
                 </div>
 
@@ -98,45 +72,7 @@
         </section>
     </main>
 
-    <!-- SCRIPT ÚNICO DE FUNCIONALIDAD LOCAL (Registro y Autenticación) -->
     <script>
-        const loginSection = document.getElementById('login-section');
-        const registerSection = document.getElementById('register-section');
-        const btnShowRegister = document.getElementById('btn-show-register');
-        const btnShowLogin = document.getElementById('btn-show-login');
-
-        btnShowRegister.addEventListener('click', (e) => {
-            e.preventDefault();
-            loginSection.classList.add('hidden');
-            registerSection.classList.remove('hidden');
-        });
-
-        btnShowLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            registerSection.classList.add('hidden');
-            loginSection.classList.remove('hidden');
-        });
-
-        document.getElementById('form-register').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('reg-name').value;
-            const email = document.getElementById('reg-email').value;
-            const pass = document.getElementById('reg-pass').value;
-
-            let users = JSON.parse(localStorage.getItem('agro_users')) || [];
-            
-            if(users.find(u => u.email === email)) {
-                alert('Este correo ya está registrado.');
-                return;
-            }
-
-            users.push({ name, email, pass });
-            localStorage.setItem('agro_users', JSON.stringify(users));
-            alert('Cuenta creada con éxito. Ahora puedes iniciar sesión.');
-            
-            btnShowLogin.click();
-        });
-
         document.getElementById('form-login').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
@@ -147,6 +83,14 @@
 
             if (user) {
                 localStorage.setItem('usuario_agro', user.name);
+
+                const partesNombre = (user.name || '').trim().split(' ');
+                localStorage.setItem('agro_sesion_usuario', JSON.stringify({
+                    Nombre: user.nombre || partesNombre[0] || '',
+                    Apellidos: user.apellidos || partesNombre[1] || '',
+                    Correo: user.email
+                }));
+
                 window.location.href = 'index.html';
             } else {
                 alert('Correo o contraseña incorrectos.');
@@ -154,7 +98,6 @@
         });
     </script>
 
-    <!-- SCRIPT GLOBAL (Carga al final para no interrumpir el DOM de esta página) -->
     <script src="js/app.js"></script>
 </body>
 </html>

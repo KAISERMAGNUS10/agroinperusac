@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGROINPERU - Módulo de Picking</title>
+    <title>AGROINPERU - Picking</title>
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/picking.css">
 </head>
 <body>
 
-    <!-- CABECERA DE STAFF — mismo estilo que caja.html, sin buscador ni carrito -->
     <header class="navbar-caja">
         <div class="logo-container">
             <img src="img/logoagroperu.jpg" alt="Agroinperu" class="logo-drop">
@@ -17,19 +16,24 @@
                 <span class="text-blue">AGROIN</span><span class="text-red">PERU</span> <span class="text-blue">S.A.C</span>
             </span>
         </div>
-        <span class="caja-role-badge">Módulo de Picking y Preparación de Pedidos · Almacenero</span>
+        <span class="caja-role-badge">Picking · Almacenero</span>
     </header>
 
-    <main class="picking-container">
-        <h2>Pedidos pendientes de preparación</h2>
-        <p class="picking-subtitle">Marca cada producto a medida que lo separas del estante. Al completar todo el pedido, finaliza el picking.</p>
+    <main class="wms-container">
+        <div class="wms-toolbar">
+            <h2>Pedidos pendientes</h2>
+            <span class="wms-contador" id="wms-contador">0</span>
+        </div>
 
-        <div id="lista-picking" class="lista-picking"></div>
+        <div id="lista-picking" class="wms-lista"></div>
 
-        <div id="picking-empty-state" class="picking-empty-state" style="display:none;">
-            🎉 No hay pedidos pendientes de preparación por el momento.
+        <div id="wms-empty-state" class="wms-empty-state" style="display:none;">
+            <div class="wms-empty-icon">📦</div>
+            <p>¡Todo al día en almacén! No hay pedidos pendientes.</p>
         </div>
     </main>
+
+    <div id="toast-container" class="toast-container"></div>
 
     <script src="js/picking.js"></script>
 </body>

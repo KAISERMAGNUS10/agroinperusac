@@ -1,49 +1,53 @@
 // ==========================================
-// 1. FUNCIÓN PARA FORMATEAR NOMBRE ("Apellido, Nombre")
-// ==========================================
-function formatearNombre(nombreCompleto) {
-    if (!nombreCompleto) return "";
-    const partes = nombreCompleto.trim().split(/\s+/);
-    let primerNombre = partes[0]; 
-    let primerApellido = "";
-
-    if (partes.length === 2) {
-        primerApellido = partes[1];
-    } else if (partes.length >= 3) {
-        // Toma la penúltima palabra como primer apellido
-        primerApellido = partes[partes.length - 2];
-    }
-
-    let resultado = primerApellido ? `${primerApellido}, ${primerNombre}` : primerNombre;
-    return resultado.replace(/\b\w/g, letra => letra.toUpperCase());
-}
-
-// ==========================================
 // 2. GESTIÓN DE SESIÓN Y MENÚ DESPLEGABLE (Global)
 // ==========================================
+function obtenerSaludoUsuario(usuarioGuardado) {
+    let nombre = '';
+    let apellido = '';
+
+    try {
+        const sesion = JSON.parse(localStorage.getItem('agro_sesion_usuario'));
+        if (sesion && typeof sesion.Nombre === 'string' && sesion.Nombre.trim()) {
+            nombre = sesion.Nombre.trim().split(' ')[0];
+            apellido = typeof sesion.Apellidos === 'string' && sesion.Apellidos.trim()
+                ? sesion.Apellidos.trim().split(' ')[0]
+                : '';
+        }
+    } catch (e) {
+        nombre = '';
+    }
+
+    if (!nombre) {
+        const partes = (usuarioGuardado || '').trim().split(' ');
+        nombre = partes[0] || '';
+        apellido = partes[1] || '';
+    }
+
+    return apellido ? `Hola ${nombre} ${apellido}` : `Hola ${nombre}`;
+}
+
 function inicializarSesion() {
     const usuarioGuardado = localStorage.getItem('usuario_agro');
     const userTrigger = document.getElementById('user-trigger');
     const userDisplayName = document.getElementById('user-display-name');
+    const userGreetingLabel = userTrigger ? userTrigger.querySelector('.user-greeting-label') : null;
     const userDropdownMenu = document.getElementById('user-dropdown-menu');
     const dropdownUserFull = document.getElementById('dropdown-user-full');
     const btnLogoutTottus = document.getElementById('btn-logout-tottus');
 
     if (usuarioGuardado) {
-        // Formatear el nombre según la regla: Apellido, Nombre
-        const nombreFormateado = formatearNombre(usuarioGuardado);
+        const saludo = obtenerSaludoUsuario(usuarioGuardado);
 
-        if (userDisplayName) userDisplayName.textContent = `${nombreFormateado} ⌄`;
-        if (dropdownUserFull) dropdownUserFull.textContent = nombreFormateado;
+        if (userGreetingLabel) userGreetingLabel.textContent = '';
+        if (userDisplayName) userDisplayName.textContent = `${saludo} ⌄`;
+        if (dropdownUserFull) dropdownUserFull.textContent = saludo.replace('Hola ', '');
 
-        // Alternar el menú desplegable al hacer clic
         if (userTrigger && userDropdownMenu) {
             userTrigger.addEventListener('click', (e) => {
                 e.stopPropagation();
                 userDropdownMenu.classList.toggle('active');
             });
 
-            // Cerrar el menú si se hace clic fuera de él
             document.addEventListener('click', () => {
                 if (userDropdownMenu.classList.contains('active')) {
                     userDropdownMenu.classList.remove('active');
@@ -51,16 +55,15 @@ function inicializarSesion() {
             });
         }
 
-        // Botón para cerrar sesión
         if (btnLogoutTottus) {
             btnLogoutTottus.addEventListener('click', (e) => {
                 e.preventDefault();
                 localStorage.removeItem('usuario_agro');
+                localStorage.removeItem('agro_sesion_usuario');
                 window.location.reload();
             });
         }
     } else {
-        // Estado sin sesión iniciada
         if (userDisplayName) userDisplayName.textContent = "Inicia sesión ⌄";
         if (userTrigger) {
             userTrigger.addEventListener('click', () => {
@@ -122,8 +125,31 @@ function inicializarMenuLateral() {
 // ==========================================
 // 5. INICIALIZACIÓN
 // ==========================================
+function updateHeaderGreeting() {
+    const destino = document.getElementById('nombre-usuario-header');
+    if (!destino) return;
+
+    let saludo = 'Hola Invitado';
+
+    try {
+        const sesion = JSON.parse(localStorage.getItem('agro_sesion_usuario'));
+        if (sesion && typeof sesion.Nombre === 'string' && sesion.Nombre.trim()) {
+            const primerNombre = sesion.Nombre.trim().split(' ')[0];
+            const primerApellido = typeof sesion.Apellidos === 'string' && sesion.Apellidos.trim()
+                ? sesion.Apellidos.trim().split(' ')[0]
+                : '';
+            saludo = primerApellido ? `Hola ${primerNombre} ${primerApellido}` : `Hola ${primerNombre}`;
+        }
+    } catch (e) {
+        saludo = 'Hola Invitado';
+    }
+
+    destino.textContent = saludo;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     inicializarSesion();
     actualizarContadorCarrito();
     inicializarMenuLateral();
+    updateHeaderGreeting();
 });

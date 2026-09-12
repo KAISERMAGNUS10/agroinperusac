@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGROINPERU - Regístrate</title>
+    <link rel="stylesheet" href="css/registro.css">
+</head>
+<body>
+
+    <div class="registro-topbar">
+        <a href="index.html" class="registro-logo">
+            <img src="img/logoagroperu.jpg" alt="Agroinperu" class="registro-logo-img">
+            <span class="registro-logo-text">
+                <span class="text-cyan">AGROIN</span><span class="text-red">PERU</span> <span class="text-cyan">S.A.C</span>
+            </span>
+        </a>
+    </div>
+
+    <main class="registro-wrap">
+        <div class="registro-card">
+            <h1>Regístrate para comprar en Agroinperu</h1>
+            <p class="registro-subtitulo">Crea tu cuenta y accede a precios de distribuidor y despacho inmediato.</p>
+
+            <form id="form-registro" novalidate>
+                <div class="campo">
+                    <label for="reg-correo">Correo electrónico</label>
+                    <input type="email" id="reg-correo">
+                    <span class="campo-error" id="err-correo"></span>
+                </div>
+
+                <div class="campo-fila">
+                    <div class="campo">
+                        <label for="reg-nombre">Nombre</label>
+                        <input type="text" id="reg-nombre">
+                        <span class="campo-error" id="err-nombre"></span>
+                    </div>
+                    <div class="campo">
+                        <label for="reg-apellidos">Apellidos</label>
+                        <input type="text" id="reg-apellidos">
+                        <span class="campo-error" id="err-apellidos"></span>
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <label for="reg-doc-numero">Documento</label>
+                    <div class="input-combinado">
+                        <select id="reg-doc-tipo">
+                            <option value="DNI">DNI</option>
+                            <option value="CE">CE</option>
+                        </select>
+                        <input type="text" id="reg-doc-numero" maxlength="12" inputmode="numeric">
+                    </div>
+                    <span class="campo-ayuda" id="ayuda-doc">DNI: 8 dígitos</span>
+                    <span class="campo-error" id="err-doc"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="reg-celular">Celular</label>
+                    <div class="input-combinado">
+                        <span class="prefijo-fijo">+51</span>
+                        <input type="text" id="reg-celular" maxlength="9" inputmode="numeric">
+                    </div>
+                    <span class="campo-ayuda">9 dígitos, sin espacios</span>
+                    <span class="campo-error" id="err-celular"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="reg-password">Contraseña</label>
+                    <div class="input-con-icono">
+                        <input type="password" id="reg-password">
+                        <button type="button" class="btn-ojo" id="btn-toggle-password">👁</button>
+                    </div>
+                </div>
+
+                <div class="matriz-seguridad">
+                    <div class="req-item" id="req-longitud"><span class="req-check">○</span> Mín. 8 caracteres</div>
+                    <div class="req-item" id="req-numero"><span class="req-check">○</span> 1 número</div>
+                    <div class="req-item" id="req-mayuscula"><span class="req-check">○</span> 1 mayúscula</div>
+                    <div class="req-item" id="req-minuscula"><span class="req-check">○</span> 1 minúscula</div>
+                </div>
+
+                <div class="campo-checkbox">
+                    <input type="checkbox" id="chk-terminos">
+                    <label for="chk-terminos">Acepto los Términos y Condiciones de Agroinperu S.A.C.</label>
+                </div>
+                <div class="campo-checkbox">
+                    <input type="checkbox" id="chk-privacidad">
+                    <label for="chk-privacidad">Acepto la Política de Privacidad y Protección de Datos Personales (Ley N° 29733)</label>
+                </div>
+
+                <button type="submit" class="btn-registrar" id="btn-registrar" disabled>Regístrate</button>
+            </form>
+
+            <div class="registro-login-link">
+                ¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/registro.js"></script>
+</body>
+</html>
