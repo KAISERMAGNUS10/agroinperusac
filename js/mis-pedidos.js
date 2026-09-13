@@ -1,15 +1,33 @@
-// ==========================================
-// MIS-PEDIDOS.JS
-// ==========================================
-
-// --- Seguridad de entrada ---
-if (!localStorage.getItem('usuario_agro')) {
-    window.location.href = 'login.html';
+function normalizar(valor) {
+    return (valor || '').toString().trim().toLowerCase();
 }
 
-// ==========================================
-// 1. LECTURA / ESCRITURA DEL HISTORIAL
-// ==========================================
+function obtenerUsuarioActivo() {
+    let sesion = null;
+    try {
+        sesion = JSON.parse(localStorage.getItem('agro_sesion_usuario'));
+    } catch (e) {
+        sesion = null;
+    }
+
+    if (sesion && (sesion.Correo || sesion.Nombre)) {
+        return {
+            correo: normalizar(sesion.Correo),
+            clienteNombre: normalizar(`${sesion.Nombre || ''} ${sesion.Apellidos || ''}`)
+        };
+    }
+
+    const usuarioPlano = localStorage.getItem('usuario_agro');
+    if (usuarioPlano) {
+        return {
+            correo: '',
+            clienteNombre: normalizar(usuarioPlano)
+        };
+    }
+
+    return null;
+}
+
 function leerTickets() {
     try {
         return JSON.parse(localStorage.getItem('agro_tickets_db')) || [];
@@ -27,16 +45,32 @@ function buscarIndicePorId(db, id) {
     return db.findIndex(t => t.id === id);
 }
 
-// ==========================================
-// 2. REGLAS DE ESTADO (RF11, RF12, RF32/34)
-// ==========================================
+const usuarioActivo = obtenerUsuarioActivo();
+
+function perteneceAlUsuario(ticket) {
+    if (!usuarioActivo) return false;
+    const correoTicket = normalizar(ticket.correo);
+    const clienteTicket = normalizar(ticket.cliente);
+    const coincideCorreo = usuarioActivo.correo && correoTicket && correoTicket === usuarioActivo.correo;
+    const coincideCliente = usuarioActivo.clienteNombre && clienteTicket && clienteTicket === usuarioActivo.clienteNombre;
+    return Boolean(coincideCorreo || coincideCliente);
+}
+
+function leerTicketsDelUsuario() {
+    return leerTickets().filter(perteneceAlUsuario);
+}
+
+function obtenerTicketPropioPorId(id) {
+    const ticket = leerTickets().find(t => t.id === id);
+    if (!ticket || !perteneceAlUsuario(ticket)) return null;
+    return ticket;
+}
+
 const ESTADOS_FINALES = ['ENTREGADO', 'CANCELADO'];
 
-// El estado que se MUESTRA puede diferir del guardado: si sigue "VIGENTE"
-// pero ya pasó su fecha de expiración (RF11: 2 días hábiles), se ve como EXPIRADO.
 function calcularEstadoMostrado(ticket) {
     const estado = ticket.estado || 'VIGENTE';
-    if (estado !== 'VIGENTE') return estado; // PAGADO, LISTO_PARA_RECOJO, ENTREGADO, CANCELADO
+    if (estado !== 'VIGENTE') return estado;
     if (ticket.fechaExpiracion && new Date() > new Date(ticket.fechaExpiracion)) return 'EXPIRADO';
     return 'VIGENTE';
 }
@@ -53,22 +87,17 @@ function etiquetaEstado(estadoMostrado) {
     return etiquetas[estadoMostrado] || estadoMostrado;
 }
 
-// RF12: cancelar solo si sigue VIGENTE (no expirado/pagado/etc.) y con menos de 24h desde la emisión
 function puedeCancelar(ticket) {
     if (calcularEstadoMostrado(ticket) !== 'VIGENTE') return false;
     const horasTranscurridas = (Date.now() - new Date(ticket.fechaEmision).getTime()) / 3600000;
     return horasTranscurridas < 24;
 }
 
-// RF32/RF34: se puede asignar/editar/eliminar persona autorizada mientras no esté ENTREGADO ni CANCELADO
 function puedeGestionarPersonaAutorizada(ticket) {
     const estado = ticket.estado || 'VIGENTE';
     return !ESTADOS_FINALES.includes(estado);
 }
 
-// ==========================================
-// 3. RENDER DE LA LISTA
-// ==========================================
 function formatearFecha(iso) {
     if (!iso) return '—';
     return new Date(iso).toLocaleString('es-PE', {
@@ -76,22 +105,31 @@ function formatearFecha(iso) {
     });
 }
 
-function renderizarPedidos() {
-    const db = leerTickets();
-    const contenedor = document.getElementById('lista-pedidos');
-    const emptyState = document.getElementById('pedidos-empty-state');
+const estadoSinSesion = document.getElementById('estado-sin-sesion');
+const estadoSinPedidos = document.getElementById('estado-sin-pedidos');
+const contenedorLista = document.getElementById('lista-pedidos');
 
-    if (db.length === 0) {
-        contenedor.innerHTML = '';
-        emptyState.style.display = 'block';
+function renderizarPedidos() {
+    estadoSinSesion.style.display = 'none';
+    estadoSinPedidos.style.display = 'none';
+    contenedorLista.style.display = 'none';
+
+    if (!usuarioActivo) {
+        estadoSinSesion.style.display = 'block';
         return;
     }
-    emptyState.style.display = 'none';
 
-    // Más reciente primero
-    const pedidos = [...db].reverse();
+    const pedidos = leerTicketsDelUsuario();
 
-    contenedor.innerHTML = pedidos.map(ticket => {
+    if (pedidos.length === 0) {
+        estadoSinPedidos.style.display = 'block';
+        return;
+    }
+
+    contenedorLista.style.display = 'flex';
+    const pedidosOrdenados = [...pedidos].reverse();
+
+    contenedorLista.innerHTML = pedidosOrdenados.map(ticket => {
         const estadoMostrado = calcularEstadoMostrado(ticket);
         const persona = ticket.personaAutorizada;
 
@@ -130,23 +168,18 @@ function renderizarPedidos() {
     }).join('');
 }
 
-// ==========================================
-// 4. ACCIÓN: VER DETALLE / TICKET (RF13)
-// ==========================================
 function verDetalle(id) {
-    const db = leerTickets();
-    const ticket = db.find(t => t.id === id);
+    const ticket = obtenerTicketPropioPorId(id);
     if (!ticket) return;
 
-    // ticket.html siempre lee el ticket completo desde 'agro_ticket_actual'
     localStorage.setItem('agro_ticket_actual', JSON.stringify(ticket));
     window.location.href = 'ticket.html';
 }
 
-// ==========================================
-// 5. ACCIÓN: CANCELAR PEDIDO (RF12)
-// ==========================================
 function cancelarPedido(id) {
+    const ticketPropio = obtenerTicketPropioPorId(id);
+    if (!ticketPropio) return;
+
     const confirmado = confirm('¿Seguro que deseas cancelar este pedido? Esta acción no se puede deshacer.');
     if (!confirmado) return;
 
@@ -159,9 +192,6 @@ function cancelarPedido(id) {
     renderizarPedidos();
 }
 
-// ==========================================
-// 6. MODAL: PERSONA AUTORIZADA (RF32 / RF34)
-// ==========================================
 const modalOverlay = document.getElementById('modal-overlay');
 const modalNombre = document.getElementById('modal-nombre');
 const modalDni = document.getElementById('modal-dni');
@@ -174,8 +204,7 @@ const modalBtnQuitar = document.getElementById('modal-btn-quitar');
 let idTicketEnEdicion = null;
 
 function abrirModalPersona(id) {
-    const db = leerTickets();
-    const ticket = db.find(t => t.id === id);
+    const ticket = obtenerTicketPropioPorId(id);
     if (!ticket) return;
 
     idTicketEnEdicion = id;
@@ -197,6 +226,9 @@ function cerrarModalPersona() {
 }
 
 function guardarPersonaAutorizada() {
+    const ticketPropio = obtenerTicketPropioPorId(idTicketEnEdicion);
+    if (!ticketPropio) return;
+
     const nombre = modalNombre.value.trim();
     const dni = modalDni.value.trim();
     modalErrNombre.textContent = '';
@@ -224,6 +256,9 @@ function guardarPersonaAutorizada() {
 }
 
 function quitarPersonaAutorizada() {
+    const ticketPropio = obtenerTicketPropioPorId(idTicketEnEdicion);
+    if (!ticketPropio) return;
+
     const db = leerTickets();
     const idx = buscarIndicePorId(db, idTicketEnEdicion);
     if (idx === -1) return;
@@ -241,10 +276,7 @@ modalOverlay.addEventListener('click', (e) => {
     if (e.target === modalOverlay) cerrarModalPersona();
 });
 
-// ==========================================
-// 7. DELEGACIÓN DE EVENTOS DE LA LISTA
-// ==========================================
-document.getElementById('lista-pedidos').addEventListener('click', (e) => {
+contenedorLista.addEventListener('click', (e) => {
     const boton = e.target.closest('button[data-action]');
     if (!boton) return;
 
@@ -256,7 +288,4 @@ document.getElementById('lista-pedidos').addEventListener('click', (e) => {
     if (accion === 'persona') abrirModalPersona(id);
 });
 
-// ==========================================
-// 8. INICIALIZACIÓN
-// ==========================================
 document.addEventListener('DOMContentLoaded', renderizarPedidos);

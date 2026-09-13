@@ -121,6 +121,19 @@ body {
     min-height: 14px;
 }
 
+.campo-ayuda {
+    display: block;
+    font-size: 11.5px;
+    color: #94A3B8;
+    margin-top: 5px;
+}
+
+.campo-bloqueado {
+    background-color: #EFEFEF;
+    color: #6B7280;
+    cursor: not-allowed;
+}
+
 .btn-confirm-order {
     width: 100%;
     background: #00c853;

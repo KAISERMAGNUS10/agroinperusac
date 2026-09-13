@@ -228,7 +228,7 @@ function mostrarTicket(ticket) {
         <div class="caja-datos-grid">
             <div class="caja-dato-item">
                 <span>${ticket.tipoComprobante === 'factura' ? 'Razón Social' : 'Cliente'}</span>
-                <strong>${ticket.cliente || '—'}</strong>
+                <strong>${ticket.nombreFacturacion || ticket.cliente || '—'}</strong>
             </div>
             <div class="caja-dato-item">
                 <span>${ticket.documentoTipo || 'DNI / RUC'}</span>

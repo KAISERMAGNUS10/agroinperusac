@@ -30,7 +30,7 @@ function renderizarTicket(ticket) {
     document.getElementById('t-expira').textContent = ticket.fechaExpiracion
         ? `${formatearFecha(ticket.fechaExpiracion)} (Vence en 2 días)`
         : '—';
-    document.getElementById('t-cliente').textContent = ticket.cliente || '—';
+    document.getElementById('t-cliente').textContent = ticket.nombreFacturacion || ticket.cliente || '—';
     document.getElementById('t-doc-label').textContent = ticket.documentoTipo || 'DNI / RUC';
     document.getElementById('t-doc').textContent = ticket.documentoNumero || '—';
     document.getElementById('t-email').textContent = ticket.correo || '—';

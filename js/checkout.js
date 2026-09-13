@@ -44,6 +44,7 @@ const optFactura = document.getElementById('opt-factura');
 
 const lblNombreRazon = document.getElementById('lbl-nombre-razon');
 const inputNombreRazon = document.getElementById('chk-nombre-razon');
+const inputEmail = document.getElementById('chk-email');
 
 const tipoDoc = document.getElementById('chk-tipo-doc');
 const lblNumDoc = document.getElementById('lbl-num-doc');
@@ -215,6 +216,36 @@ function generarIdTicket() {
     return `TK-${year}-${numero}`;
 }
 
+function normalizar(valor) {
+    return (valor || '').toString().trim().toLowerCase();
+}
+
+function obtenerUsuarioActivo() {
+    let sesion = null;
+    try {
+        sesion = JSON.parse(localStorage.getItem('agro_sesion_usuario'));
+    } catch (e) {
+        sesion = null;
+    }
+
+    if (sesion && (sesion.Correo || sesion.Nombre)) {
+        return {
+            correo: (sesion.Correo || '').trim(),
+            cliente: `${sesion.Nombre || ''} ${sesion.Apellidos || ''}`.trim()
+        };
+    }
+
+    const usuarioPlano = localStorage.getItem('usuario_agro');
+    if (usuarioPlano) {
+        return {
+            correo: '',
+            cliente: usuarioPlano.trim()
+        };
+    }
+
+    return null;
+}
+
 function recolectarDatosCliente() {
     const esBoleta = optBoleta.checked;
     const tipo = tipoDoc.value;
@@ -234,24 +265,28 @@ function generarYGuardarTicket() {
     const productos = obtenerItemsCarrito();
     const total = calcularTotal(productos);
     const ahora = new Date();
-    const expiracion = new Date(ahora.getTime() + 48 * 60 * 60 * 1000); // +48 horas
+    const expiracion = new Date(ahora.getTime() + 48 * 60 * 60 * 1000);
     const datosCliente = recolectarDatosCliente();
+    const usuarioActivo = obtenerUsuarioActivo();
 
-    // Estructura PLANA: así la espera ticket.js, sin anidar en "datosCliente"
+    const correoVinculado = usuarioActivo && usuarioActivo.correo ? usuarioActivo.correo : datosCliente.correo;
+    const clienteVinculado = usuarioActivo && usuarioActivo.cliente ? usuarioActivo.cliente : datosCliente.cliente;
+
     const ticket = {
         id: generarIdTicket(),
         fechaEmision: ahora.toISOString(),
         fechaExpiracion: expiracion.toISOString(),
-        cliente: datosCliente.cliente,
+        cliente: clienteVinculado,
+        nombreFacturacion: datosCliente.cliente,
         documentoTipo: datosCliente.documentoTipo,
         documentoNumero: datosCliente.documentoNumero,
-        correo: datosCliente.correo,
+        correo: correoVinculado,
         telefono: datosCliente.telefono,
         tipoComprobante: datosCliente.tipoComprobante,
         productos: productos,
         total: total,
-        estado: 'VIGENTE',           // VIGENTE | PAGADO | LISTO_PARA_RECOJO | ENTREGADO | CANCELADO
-        personaAutorizada: null      // { nombre, dni } — se completa desde Mis Pedidos
+        estado: 'VIGENTE',
+        personaAutorizada: null
     };
 
     const db = JSON.parse(localStorage.getItem('agro_tickets_db')) || [];
@@ -259,7 +294,6 @@ function generarYGuardarTicket() {
     localStorage.setItem('agro_tickets_db', JSON.stringify(db));
     localStorage.setItem('agro_ticket_actual', JSON.stringify(ticket));
 
-    // El pedido ya quedó registrado: se vacía el carrito
     localStorage.removeItem('agro_carrito_obj');
 
     return ticket;
@@ -279,7 +313,25 @@ form.addEventListener('submit', (e) => {
 // ==========================================
 // 8. INICIALIZACIÓN
 // ==========================================
+function precargarDatosSesion() {
+    const usuarioActivo = obtenerUsuarioActivo();
+    if (!usuarioActivo) return;
+
+    if (usuarioActivo.cliente) {
+        inputNombreRazon.value = usuarioActivo.cliente;
+    }
+
+    if (usuarioActivo.correo) {
+        inputEmail.value = usuarioActivo.correo;
+        inputEmail.readOnly = true;
+        inputEmail.classList.add('campo-bloqueado');
+    }
+
+    validarFormularioCompleto();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     renderizarResumenCheckout();
-    actualizarCamposSegunComprobante(); // deja las opciones de documento correctas desde el inicio
+    actualizarCamposSegunComprobante();
+    precargarDatosSesion();
 });

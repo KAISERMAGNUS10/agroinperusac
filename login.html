@@ -51,16 +51,16 @@
                     <h2>Iniciar Sesión</h2>
                     <p class="subtitle">Ingresa a tu cuenta para gestionar tus pedidos</p>
                     
-                    <form id="form-login">
+                    <form id="loginForm">
                         <div class="input-group">
                             <label>Correo electrónico</label>
-                            <input type="email" id="login-email" placeholder="✉ cliente@agroinperu.com" required>
+                            <input type="email" id="loginCorreo" name="email" placeholder="✉ cliente@agroinperu.com" autocomplete="email" required>
                         </div>
                         <div class="input-group">
                             <label>Contraseña</label>
-                            <input type="password" id="login-pass" placeholder="🔒 ••••••••••" required>
+                            <input type="password" id="loginPassword" name="password" placeholder="🔒 ••••••••••" autocomplete="current-password" required>
                         </div>
-                        <button type="submit" class="btn-primary">Iniciar Sesión</button>
+                        <button type="submit" id="btnLogin" class="btn-primary">Iniciar Sesión</button>
                     </form>
                     
                     <div class="divider">
@@ -73,10 +73,10 @@
     </main>
 
     <script>
-        document.getElementById('form-login').addEventListener('submit', (e) => {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const pass = document.getElementById('login-pass').value;
+            const email = document.getElementById('loginCorreo').value;
+            const pass = document.getElementById('loginPassword').value;
 
             let users = JSON.parse(localStorage.getItem('agro_users')) || [];
             const user = users.find(u => u.email === email && u.pass === pass);

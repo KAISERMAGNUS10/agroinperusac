@@ -64,7 +64,7 @@ function renderizarPicking() {
                 ${esPrioridad ? '<span class="badge-pill badge-prioridad">🔥 MÁS ANTIGUO / PRIORIDAD</span>' : ''}
             </div>
             <div class="wms-card-body">
-                <div class="wms-cliente">Cliente: <strong>${ticket.cliente || '—'}</strong></div>
+                <div class="wms-cliente">Cliente: <strong>${ticket.nombreFacturacion || ticket.cliente || '—'}</strong></div>
                 <div class="wms-checklist">
                     ${productos.map((item, i) => {
                         const nombre = item.nombre || item.name || 'Producto Agro';

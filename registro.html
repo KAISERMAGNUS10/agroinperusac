@@ -22,53 +22,53 @@
             <h1>Regístrate para comprar en Agroinperu</h1>
             <p class="registro-subtitulo">Crea tu cuenta y accede a precios de distribuidor y despacho inmediato.</p>
 
+            <div class="campo-fila">
+                <div class="campo">
+                    <label for="reg-nombre">Nombre</label>
+                    <input type="text" id="reg-nombre" name="nombre" autocomplete="off" form="form-registro">
+                    <span class="campo-error" id="err-nombre"></span>
+                </div>
+                <div class="campo">
+                    <label for="reg-apellidos">Apellidos</label>
+                    <input type="text" id="reg-apellidos" name="apellidos" autocomplete="off" form="form-registro">
+                    <span class="campo-error" id="err-apellidos"></span>
+                </div>
+            </div>
+
+            <div class="campo">
+                <label for="reg-doc-numero">Documento</label>
+                <div class="input-combinado">
+                    <select id="reg-doc-tipo" name="tipoDocumento" autocomplete="off" form="form-registro">
+                        <option value="DNI">DNI</option>
+                        <option value="CE">CE</option>
+                    </select>
+                    <input type="text" id="reg-doc-numero" name="numeroDocumento" maxlength="12" inputmode="numeric" autocomplete="off" form="form-registro">
+                </div>
+                <span class="campo-ayuda" id="ayuda-doc">DNI: 8 dígitos</span>
+                <span class="campo-error" id="err-doc"></span>
+            </div>
+
+            <div class="campo">
+                <label for="reg-celular">Celular</label>
+                <div class="input-combinado">
+                    <span class="prefijo-fijo">+51</span>
+                    <input type="text" id="reg-celular" name="celular" maxlength="9" inputmode="numeric" autocomplete="off" form="form-registro">
+                </div>
+                <span class="campo-ayuda">9 dígitos, sin espacios</span>
+                <span class="campo-error" id="err-celular"></span>
+            </div>
+
             <form id="form-registro" novalidate>
                 <div class="campo">
                     <label for="reg-correo">Correo electrónico</label>
-                    <input type="email" id="reg-correo">
+                    <input type="email" id="reg-correo" name="email" autocomplete="email" required>
                     <span class="campo-error" id="err-correo"></span>
-                </div>
-
-                <div class="campo-fila">
-                    <div class="campo">
-                        <label for="reg-nombre">Nombre</label>
-                        <input type="text" id="reg-nombre">
-                        <span class="campo-error" id="err-nombre"></span>
-                    </div>
-                    <div class="campo">
-                        <label for="reg-apellidos">Apellidos</label>
-                        <input type="text" id="reg-apellidos">
-                        <span class="campo-error" id="err-apellidos"></span>
-                    </div>
-                </div>
-
-                <div class="campo">
-                    <label for="reg-doc-numero">Documento</label>
-                    <div class="input-combinado">
-                        <select id="reg-doc-tipo">
-                            <option value="DNI">DNI</option>
-                            <option value="CE">CE</option>
-                        </select>
-                        <input type="text" id="reg-doc-numero" maxlength="12" inputmode="numeric">
-                    </div>
-                    <span class="campo-ayuda" id="ayuda-doc">DNI: 8 dígitos</span>
-                    <span class="campo-error" id="err-doc"></span>
-                </div>
-
-                <div class="campo">
-                    <label for="reg-celular">Celular</label>
-                    <div class="input-combinado">
-                        <span class="prefijo-fijo">+51</span>
-                        <input type="text" id="reg-celular" maxlength="9" inputmode="numeric">
-                    </div>
-                    <span class="campo-ayuda">9 dígitos, sin espacios</span>
-                    <span class="campo-error" id="err-celular"></span>
                 </div>
 
                 <div class="campo">
                     <label for="reg-password">Contraseña</label>
                     <div class="input-con-icono">
-                        <input type="password" id="reg-password">
+                        <input type="password" id="reg-password" name="password" autocomplete="new-password" required>
                         <button type="button" class="btn-ojo" id="btn-toggle-password">👁</button>
                     </div>
                 </div>
